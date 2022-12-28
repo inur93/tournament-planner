@@ -2,7 +2,12 @@
 
 public class KnockoutTournament : Tournament
 {
-    public List<Group> Groups { get; set; }
-    public List<KnockoutMatch> Knockouts { get; set; }
+    public KnockoutTournament(): base("knockout") { }
+    public KnockoutTournament(string name): base("knockout", name)
+    {
+    }
+
+    public ICollection<Group> Groups { get; set; } = new List<Group>();
+    public ICollection<Match> Knockouts { get; set; } = new List<Match>();
     public int NumPromoted { get; set; }
 }

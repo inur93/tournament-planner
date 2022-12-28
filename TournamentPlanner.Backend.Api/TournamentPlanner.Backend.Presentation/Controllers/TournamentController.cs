@@ -1,15 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TournamentPlanner.Backend.Contracts.Tournament;
 using TournamentPlanner.Backend.Services.Abstractions;
 
 namespace TournamentPlanner.Backend.Presentation.Controllers;
 
 [ApiController]
 [Route("api/tournaments")]
+[Produces("application/json")]
+[Consumes("application/json")]
 public class TournamentController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
@@ -20,10 +18,25 @@ public class TournamentController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetTournaments(CancellationToken token)
+    public async Task<IEnumerable<TournamentDto>> GetTournaments(CancellationToken token)
     {
-        var tournaments = await _serviceManager.TournamentService.GetAllAsync(token);
+        return await _serviceManager.TournamentService.GetAllAsync(token);
+    }
 
-        return Ok(tournaments);
+    [HttpGet("{id}")]
+    public async Task<TournamentDetailsDto> GetTournamentById(
+        [FromRoute(Name = "id")] Guid id,
+        CancellationToken token)
+    {
+        return await _serviceManager.TournamentService.GetByIdAsync(id, token);
+    }
+
+
+    [HttpPost("knockout")]
+    public async Task<KnockoutTournamentDto> CreateKnockoutTournament(
+        [FromBody] KnockoutTournamentForCreation forCreation,
+        CancellationToken token)
+    {
+        return await _serviceManager.TournamentService.CreateKnockoutTournamentAsync(forCreation, token);
     }
 }

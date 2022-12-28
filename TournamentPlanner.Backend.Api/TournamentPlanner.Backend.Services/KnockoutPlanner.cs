@@ -4,7 +4,7 @@ namespace TournamentPlanner.Backend.Services;
 
 public class KnockoutPlanner
 {
-    public List<KnockoutMatch> Plan(IList<Group> groups, int numProgressToNextStage, int legs)
+    public List<Match> Plan(ICollection<Group> groups, int numProgressToNextStage, int legs)
     {
         if (groups.Any(x => x.Teams.Count < numProgressToNextStage))
         {
@@ -12,21 +12,21 @@ public class KnockoutPlanner
             throw new Exception("Invalid tournament");
         }
 
-        var matches = new List<KnockoutMatch>();
-        for (var i = 0; i < Math.Ceiling((decimal)groups.Count / 2); i++)
+        var matches = new List<Match>();
+        for (var i = 0; i < Math.Ceiling((decimal)groups.Count() / 2); i++)
         {
             for (var pos = 0; pos < numProgressToNextStage; pos++)
             {
-                var g1 = groups[i];
-                var g2 = groups[groups.Count - 1 - i];
+                var g1 = groups.ElementAt(i);
+                var g2 = groups.ElementAt(groups.Count() - 1 - i);
                 var p1 = pos + 1; // + 1 to avoid position 0
                 var p2 = numProgressToNextStage - pos;
 
-                var match = new KnockoutMatch(
-                    new List<KnockoutCandidate>
+                var match = new Match(
+                    new List<MatchCandidate>
                 {
-                    new KnockoutCandidate(g1, p1),
-                    new KnockoutCandidate(g2, p2)
+                    new MatchCandidate(g1, p1),
+                    new MatchCandidate(g2, p2)
                 }, 1, legs);
 
                 matches.Add(match);
@@ -48,23 +48,23 @@ public class KnockoutPlanner
     }
 
     public void CreateKnockoutMatches(
-        List<KnockoutMatch> predecessors,
+        List<Match> predecessors,
         int round,
         int numRounds,
-        List<KnockoutMatch> matches)
+        List<Match> matches)
     {
 
         if (round > numRounds) return;
 
-        var roundMatches = new List<KnockoutMatch>();
+        var roundMatches = new List<Match>();
         for (var i = 0; i < predecessors.Count / 2; i++)
         {
             var legs = predecessors[i].Legs;
             var isLastRound = round == numRounds;
-            roundMatches.Add(new KnockoutMatch(new List<KnockoutCandidate>
+            roundMatches.Add(new Match(new List<MatchCandidate>
             {
-                new KnockoutCandidate(predecessors[i]),
-                new KnockoutCandidate(predecessors[predecessors.Count -1 -i])
+                new MatchCandidate(predecessors[i]),
+                new MatchCandidate(predecessors[predecessors.Count -1 -i])
             }, round, isLastRound ? 1 : legs));
         }
 

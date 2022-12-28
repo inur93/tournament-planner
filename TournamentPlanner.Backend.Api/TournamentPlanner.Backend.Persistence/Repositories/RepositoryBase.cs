@@ -13,7 +13,7 @@ internal abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
         _context = context;
     }
 
-    public IQueryable<T> FindAll()
+    public IQueryable<T> FindAll(CancellationToken token)
     {
         return _set.AsNoTracking();
     }
@@ -25,46 +25,19 @@ internal abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 
     public async Task<T> Create(T entity, CancellationToken token)
     {
-        return await Create(entity, true, token);
-    }
-
-    public async Task<T> Create(T entity, bool saveChanges, CancellationToken token)
-    {
         var result = await _set.AddAsync(entity, token);
-        if (saveChanges)
-        {
-            await _context.SaveChangesAsync(token);
-        }
         return result.Entity;
     }
 
-    public async Task<IEnumerable<T>> Create(IList<T> entities, CancellationToken token)
-    {
-        return await Create(entities, true, token);
-    }
-
-    public async Task<IEnumerable<T>> Create(IList<T> entities, bool saveChanges, CancellationToken token)
+    public async Task<IEnumerable<T>> Create(IEnumerable<T> entities, CancellationToken token)
     {
         await _set.AddRangeAsync(entities, token);
-        if (saveChanges)
-        {
-            await _context.SaveChangesAsync(token);
-        }
         return entities;
     }
 
-    public async Task<T> Update(T entity, CancellationToken token)
-    {
-        return await Update(entity, true, token);
-    }
-
-    public async Task<T> Update(T entity, bool saveChanges, CancellationToken token)
+    public Task<T> Update(T entity, CancellationToken token)
     {
         var result = _set.Update(entity);
-        if (saveChanges)
-        {
-            await _context.SaveChangesAsync(token);
-        }
-        return result.Entity;
+        return Task.FromResult(result.Entity);
     }
 }

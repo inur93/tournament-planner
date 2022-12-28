@@ -1,27 +1,43 @@
+using Microsoft.EntityFrameworkCore;
 using TournamentPlanner.Backend.Api.Configurations;
 using TournamentPlanner.Backend.Api.Filters;
+using TournamentPlanner.Backend.Domain;
+using TournamentPlanner.Backend.Domain.Repositories;
+using TournamentPlanner.Backend.Persistence.Repositories;
+using TournamentPlanner.Backend.Services;
+using TournamentPlanner.Backend.Services.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//using var scope = serviceProvider.CreateScope();
+//await using var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<HttpResponseExceptionFilter>();
+})
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+})
+.AddApplicationPart(typeof(TournamentPlanner.Backend.Presentation.AssemblyReference).Assembly);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(config =>
+{
+    config.CustomOperationIds(e => e.ActionDescriptor.RouteValues["action"]);
+});
+
+builder.Services.AddScoped<IServiceManager, ServiceManager>();
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+builder.Services.AddDbContext<DatabaseContext>(config =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("Database");
+    config.UseNpgsql(connectionString);
+});
+
 //// Add services to the container.
-
-//builder.Services.AddControllers(options =>
-//{
-//    options.Filters.Add<HttpResponseExceptionFilter>();
-//})
-//    .AddJsonOptions(options =>
-//    {
-//        options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
-//    });
-//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen(c =>
-//{
-//    c.CustomOperationIds(e => e.ActionDescriptor.RouteValues["action"]);
-//});
-
-//builder.Services.AddDbContext<ExecutersContext>(options =>
-//  options.UseNpgsql(builder.Configuration.GetConnectionString("DbContext")));
 
 //builder.Services.AddDefaultIdentity<ApplicationUser>()
 //    .AddEntityFrameworkStores<ExecutersContext>();
@@ -48,33 +64,32 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 
-//var app = builder.Build();
+var app = builder.Build();
 
 //// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//    app.UseDeveloperExceptionPage();
-//    app.UseMigrationsEndPoint();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+    //app.UseMigrationsEndPoint();
 
-//    app.UseCors(c =>
-//    {
-//        //c.AllowAnyOrigin();
-//        c.WithOrigins(new string[] { "https://localhost:3000" });
-//        c.AllowAnyMethod();
-//        c.AllowAnyHeader();
-//    });
-//}
+    //    app.UseCors(c =>
+    //    {
+    //        //c.AllowAnyOrigin();
+    //        c.WithOrigins(new string[] { "https://localhost:3000" });
+    //        c.AllowAnyMethod();
+    //        c.AllowAnyHeader();
+    //    });
+}
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
 
-//    var context = services.GetRequiredService<ExecutersContext>();
-//    context.Database.EnsureCreated();
-//    context.Database.Migrate();
-//}
+    var context = services.GetRequiredService<DatabaseContext>();
+    await context.Database.MigrateAsync();
+}
 
 //if (!app.Environment.IsDevelopment())
 //{
@@ -88,6 +103,6 @@ var builder = WebApplication.CreateBuilder(args);
 //app.UseIdentityServer();
 //app.UseAuthorization();
 
-//app.MapControllers();
+app.MapControllers();
 
-//app.Run();
+await app.RunAsync();

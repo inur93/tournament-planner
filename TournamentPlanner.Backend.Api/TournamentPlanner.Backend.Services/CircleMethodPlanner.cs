@@ -8,7 +8,11 @@ namespace TournamentPlanner.Backend.Services;
 /// </summary>
 public class CircleMethodPlanner
 {
-    public CircleMethodPlanner(Tournament tournament, IEnumerable<Team> teams, int roundRobins)
+    public static CircleMethodPlanner Create(Tournament tournament, IEnumerable<Team> teams, int roundRobins)
+    {
+        return new CircleMethodPlanner(tournament, teams, roundRobins);
+    }
+    private CircleMethodPlanner(Tournament tournament, IEnumerable<Team> teams, int roundRobins)
     {
         Tournament = tournament;
         Teams = new List<Team>(teams);
@@ -38,12 +42,14 @@ public class CircleMethodPlanner
                 var home = Teams[round[i]];
                 var away = Teams[round[n - i - 1]];
 
-                var fix = new Fixture(Tournament, home, away);
+                //alternate home/away games
+                var fixture = i == 0 && r % 2 == 0 ?
+                    new Fixture(Tournament, home, away) :
+                    new Fixture(Tournament, away, home);
 
-                if (!fix.Includes(ByeTeam))
+                if (!fixture.Includes(ByeTeam))
                 {
-                    //alternate home/away games
-                    yield return i == 0 && r % 2 == 0 ? fix : fix.Reverse();
+                    yield return fixture;
                 }
             }
 

@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  tournamentplanner.backend.api:
+    image: ${DOCKER_REGISTRY-}tournamentplannerbackendapi
+    build:
+      context: .
+      dockerfile: TournamentPlanner.Backend.Api/Dockerfile
+    ports:
+     - 61601:61601
+  db:
+    image: postgres
+    restart: always
+    environment:
+        POSTGRES_PASSWORD: example
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - 80:80
+    environment:
+        PGADMIN_DEFAULT_EMAIL: runivormadal@gmail.com
+        PGADMIN_DEFAULT_PASSWORD: example
