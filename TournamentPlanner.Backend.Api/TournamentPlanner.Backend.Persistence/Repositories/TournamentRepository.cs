@@ -26,9 +26,9 @@ internal sealed class TournamentRepository : RepositoryBase<Tournament>, ITourna
         var tournament = await _set
             .Where(x => x.Id == id)
             .Include(x => x.Fixtures)
-            .ThenInclude((Fixture f) => f.Away)
+                .ThenInclude((Fixture f) => f.Away)
             .Include(x => x.Fixtures)
-            .ThenInclude((Fixture f) => f.Home)
+                .ThenInclude((Fixture f) => f.Home)
             .FirstOrDefaultAsync(token);
 
         return tournament;
