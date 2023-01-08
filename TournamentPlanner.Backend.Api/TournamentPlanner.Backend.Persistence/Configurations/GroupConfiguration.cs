@@ -13,16 +13,20 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
+        builder.Property(x => x.ShortName).IsRequired();
         builder.Property(x => x.Name).IsRequired();
-        builder.HasMany(x => x.Fixtures)
-            .WithOne()
-            .HasForeignKey("GroupId")
-            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne<KnockoutTournament>()
+            .WithMany(x => x.Groups);
 
         builder.HasMany(x => x.Teams)
             .WithOne()
             .HasForeignKey("GroupId")
             .OnDelete(DeleteBehavior.SetNull);
 
+        builder.HasMany(x => x.Matches)
+            .WithOne()
+            .HasForeignKey("GroupId")
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

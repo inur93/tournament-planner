@@ -14,5 +14,7 @@ public class TeamConfiguration : IEntityTypeConfiguration<Team>
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
         builder.Property(x => x.Name).IsRequired();
+
+        builder.Ignore(x => x.Points);
     }
 }

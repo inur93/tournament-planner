@@ -20,7 +20,8 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-      "publishAllPorts": true,
+      "sslPort": 5001,
+      "httpPort": 5000,
       "useSSL": true
     }
   },

@@ -9,8 +9,8 @@ public class FixtureConfiguration : IEntityTypeConfiguration<Fixture>
     public void Configure(EntityTypeBuilder<Fixture> builder)
     {
         builder.ToTable(nameof(Fixture));
+        
         builder.HasKey(x => x.Id);
-
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
         builder.HasOne(x => x.Tournament)
@@ -18,15 +18,29 @@ public class FixtureConfiguration : IEntityTypeConfiguration<Fixture>
             .HasForeignKey("TournamentId")
             .OnDelete(DeleteBehavior.NoAction);
 
+        builder.Property(x => x.No)
+            .IsRequired()
+            .HasDefaultValue(1);
+
+        //builder.Property(x => x.AwayId);
+        //builder.Property(x => x.HomeId);
+
+        //builder.Ignore(x => x.Home);
+        //builder.Ignore(x => x.Away);
+
         builder.HasOne(x => x.Away)
             .WithMany()
-            .HasForeignKey(x => "AwayId")
+            .IsRequired()
+            .HasForeignKey("AwayId")
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.HasOne(x => x.Home)
+        var t = builder.HasOne(x => x.Home)
             .WithMany()
-            .HasForeignKey(x => "HomeId")
+            .IsRequired()
+            .HasForeignKey("HomeId")
             .OnDelete(DeleteBehavior.NoAction);
+    
+        builder.Property(x => x.DateTime);
 
     }
 }

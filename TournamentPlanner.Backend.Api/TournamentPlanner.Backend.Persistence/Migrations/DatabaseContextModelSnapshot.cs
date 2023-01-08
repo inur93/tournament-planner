@@ -371,8 +371,8 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
                     b.Property<int?>("AwayScore")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uuid");
+                    b.Property<DateTime?>("DateTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("HomeId")
                         .HasColumnType("uuid");
@@ -380,20 +380,33 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
                     b.Property<int?>("HomeScore")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("MatchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("No")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
                     b.Property<Guid>("TournamentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TournamentId1")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AwayId");
 
-                    b.HasIndex("GroupId");
-
                     b.HasIndex("HomeId");
+
+                    b.HasIndex("MatchId");
 
                     b.HasIndex("TournamentId");
 
-                    b.ToTable("Fixtures");
+                    b.HasIndex("TournamentId1");
+
+                    b.ToTable("Fixture", (string)null);
                 });
 
             modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Group", b =>
@@ -406,9 +419,98 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TournamentId1")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Groups");
+                    b.HasIndex("TournamentId");
+
+                    b.HasIndex("TournamentId1");
+
+                    b.ToTable("Group", (string)null);
+                });
+
+            modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Match", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("GroupId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Legs")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("No")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Round")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("TournamentId");
+
+                    b.ToTable("Match", (string)null);
+                });
+
+            modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.MatchCandidate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("GroupId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("MatchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("Position")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("MatchId");
+
+                    b.ToTable("MatchCandidate", (string)null);
+                });
+
+            modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Participantship", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("TournamentId");
+
+                    b.ToTable("Participantship", (string)null);
                 });
 
             modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Team", b =>
@@ -428,7 +530,7 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Team", (string)null);
                 });
 
             modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Tournament", b =>
@@ -437,12 +539,13 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("Date")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("TournamentType")
                         .IsRequired()
@@ -450,7 +553,26 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tournaments");
+                    b.ToTable("Tournament", (string)null);
+
+                    b.HasDiscriminator<string>("TournamentType").HasValue("Tournament");
+                });
+
+            modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.KnockoutTournament", b =>
+                {
+                    b.HasBaseType("TournamentPlanner.Backend.Domain.Entities.Tournament");
+
+                    b.Property<int>("NumPromoted")
+                        .HasColumnType("integer");
+
+                    b.HasDiscriminator().HasValue("knockout");
+                });
+
+            modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.League", b =>
+                {
+                    b.HasBaseType("TournamentPlanner.Backend.Domain.Entities.Tournament");
+
+                    b.HasDiscriminator().HasValue("league");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -509,22 +631,28 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
                     b.HasOne("TournamentPlanner.Backend.Domain.Entities.Team", "Away")
                         .WithMany()
                         .HasForeignKey("AwayId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.Group", null)
-                        .WithMany("Fixtures")
-                        .HasForeignKey("GroupId");
 
                     b.HasOne("TournamentPlanner.Backend.Domain.Entities.Team", "Home")
                         .WithMany()
                         .HasForeignKey("HomeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.Match", null)
+                        .WithMany("Fixtures")
+                        .HasForeignKey("MatchId");
+
+                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.Tournament", null)
+                        .WithMany("Fixtures")
+                        .HasForeignKey("TournamentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TournamentPlanner.Backend.Domain.Entities.Tournament", "Tournament")
-                        .WithMany("Fixtures")
-                        .HasForeignKey("TournamentId")
+                        .WithMany()
+                        .HasForeignKey("TournamentId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -535,23 +663,103 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
                     b.Navigation("Tournament");
                 });
 
+            modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Group", b =>
+                {
+                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.KnockoutTournament", null)
+                        .WithMany("Groups")
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.Tournament", "Tournament")
+                        .WithMany()
+                        .HasForeignKey("TournamentId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tournament");
+                });
+
+            modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Match", b =>
+                {
+                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.Group", null)
+                        .WithMany("Matches")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.Tournament", null)
+                        .WithMany("Matches")
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.MatchCandidate", b =>
+                {
+                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId");
+
+                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.Match", "Match")
+                        .WithMany("Candidates")
+                        .HasForeignKey("MatchId");
+
+                    b.Navigation("Group");
+
+                    b.Navigation("Match");
+                });
+
+            modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Participantship", b =>
+                {
+                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.Tournament", "Tournament")
+                        .WithMany()
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+
+                    b.Navigation("Tournament");
+                });
+
             modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Team", b =>
                 {
                     b.HasOne("TournamentPlanner.Backend.Domain.Entities.Group", null)
                         .WithMany("Teams")
-                        .HasForeignKey("GroupId");
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Group", b =>
                 {
-                    b.Navigation("Fixtures");
+                    b.Navigation("Matches");
 
                     b.Navigation("Teams");
+                });
+
+            modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Match", b =>
+                {
+                    b.Navigation("Candidates");
+
+                    b.Navigation("Fixtures");
                 });
 
             modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Tournament", b =>
                 {
                     b.Navigation("Fixtures");
+
+                    b.Navigation("Matches");
+                });
+
+            modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.KnockoutTournament", b =>
+                {
+                    b.Navigation("Groups");
                 });
 #pragma warning restore 612, 618
         }

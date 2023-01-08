@@ -1,24 +1,24 @@
 import { FormControl, InputLabel, MenuItem, Select as MuiSelect, SelectChangeEvent } from "@mui/material";
 
-type Option = {
-    key: string,
+type Option<T> = {
+    key: T,
     label: string
 }
 
-type BaseProps = {
-    value: string,
-    onChange: (event: SelectChangeEvent<string>, child: React.ReactNode) => void
+type BaseProps<T> = {
+    value?: T,
+    onChange: (event: SelectChangeEvent<T>, child: React.ReactNode) => void
 }
 
-type Props = BaseProps & {
+type Props<T> = BaseProps<T> & {
     name: string,
     label: string,
-    options: Option[]
+    options: Option<T>[]
 }
 
-const Select = ({ options, name, label, onChange, value }: Props) => {
+function Select<T extends string | number>({ options, name, label, onChange, value }: Props<T>) {
 
-    return <FormControl fullWidth>
+    return <FormControl>
         <InputLabel id={`${name}-label`}>
             {label}
         </InputLabel>

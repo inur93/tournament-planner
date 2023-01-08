@@ -5,9 +5,16 @@ namespace TournamentPlanner.Backend.Contracts.Fixture;
 public class FixtureDto
 {
     public Guid Id { get; set; }
+
+    public int No { get; set; }
+
+    public DateTime? DateTime { get; set; }
+
     public int? HomeScore { get; set; }
+    
     public int? AwayScore { get; set; }
 
     public TeamDto Home { get; set; }
+    
     public TeamDto Away { get; set; }
 }

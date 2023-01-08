@@ -2,23 +2,35 @@
 
 public class Match
 {
+    public Guid Id { get; set; }
+
+    public int Round { get; set; } = 1;
+
+    public int No { get; set; } = 1;
+
+    public int Legs { get; set; } = 1;
+
+    public Guid TournamentId { get; set; }
+
+    public ICollection<MatchCandidate> Candidates { get; set; } = new List<MatchCandidate>();
+    
+    public ICollection<Fixture> Fixtures { get; set; } = new List<Fixture>();
+    
+    public string Code => $"R{Round}M{No}";    
+
     public Match() { }
-    public Match(List<MatchCandidate> candidates, int round, int legs)
+    public Match(List<MatchCandidate> candidates)
     {
         Candidates = candidates;
-        Round = round;
-        Legs = legs;
     }
+
+    public Match(Fixture fixture) : this(new List<Fixture> { fixture })
+    { }
 
     public Match(List<Fixture> fixtures)
     {
         Fixtures = fixtures;
     }
-
-    public ICollection<MatchCandidate> Candidates { get; set; } = new List<MatchCandidate>();
-    public ICollection<Fixture> Fixtures { get; set; } = new List<Fixture>();
-    public int Round { get; set; }
-    public int Legs { get; set; }
 
     internal bool Finished()
     {

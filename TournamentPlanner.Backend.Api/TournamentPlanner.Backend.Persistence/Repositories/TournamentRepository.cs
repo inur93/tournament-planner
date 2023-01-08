@@ -29,8 +29,22 @@ internal sealed class TournamentRepository : RepositoryBase<Tournament>, ITourna
                 .ThenInclude((Fixture f) => f.Away)
             .Include(x => x.Fixtures)
                 .ThenInclude((Fixture f) => f.Home)
+            .Include(x => x.Fixtures.OrderBy(x => x.No))
+            .Include(x => x.Matches)
+                .ThenInclude((Match x) => x.Candidates)
+            .Include(x => x.Matches)
+                .ThenInclude((Match x) => x.Fixtures)
+            .Include(x => x.Teams)
+
             .FirstOrDefaultAsync(token);
 
+        if(tournament is KnockoutTournament knockoutTournament)
+        {
+            await _context.Entry(knockoutTournament)
+                .Collection(x => x.Groups)
+                .LoadAsync(token);
+        }
+        
         return tournament;
     }
 }

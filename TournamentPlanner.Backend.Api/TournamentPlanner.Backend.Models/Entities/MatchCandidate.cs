@@ -6,6 +6,18 @@
 /// </summary>
 public class MatchCandidate
 {
+    public Guid Id { get; set; }
+    
+    /// <summary>
+    /// Applies only when a group is specified instead of a match.
+    /// </summary>
+    public int? Position { get; set; }
+
+    public virtual Group? Group { get; set; }
+
+    public virtual Match? Match { get; set; }
+
+    public MatchCandidate() { }
     public MatchCandidate(Match match)
     {
         Match = match;
@@ -17,9 +29,9 @@ public class MatchCandidate
         Position = position;
     }
 
-    public virtual Group? Group { get; set; }
-    public int? Position { get; set; }
-    public virtual Match? Match { get; set; }
+    public string Code => Group != null ? 
+        $"{Group.ShortName}{Position}" : 
+        $"{Match.Code}";
 
     //public Team GetOpponent()
     //{

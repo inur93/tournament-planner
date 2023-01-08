@@ -26,6 +26,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(config =>
 {
     config.CustomOperationIds(e => e.ActionDescriptor.RouteValues["action"]);
+    config.UseOneOfForPolymorphism();
+
+    config.SelectDiscriminatorNameUsing(baseType => "TypeName");
+    config.SelectDiscriminatorValueUsing(subType => subType.Name);
+
+    //config.SelectDiscriminatorNameUsing((baseType) => base)
 });
 
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
@@ -74,13 +80,13 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
     //app.UseMigrationsEndPoint();
 
-    //    app.UseCors(c =>
-    //    {
-    //        //c.AllowAnyOrigin();
-    //        c.WithOrigins(new string[] { "https://localhost:3000" });
-    //        c.AllowAnyMethod();
-    //        c.AllowAnyHeader();
-    //    });
+    app.UseCors(c =>
+    {
+        //c.AllowAnyOrigin();
+        c.WithOrigins(new string[] { "https://localhost:3000" });
+        c.AllowAnyMethod();
+        c.AllowAnyHeader();
+    });
 }
 
 using (var scope = app.Services.CreateScope())

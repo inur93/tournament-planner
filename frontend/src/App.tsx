@@ -1,25 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { Button } from './components/shared';
 import { ThemeProvider } from '@mui/material';
+import { Route, HashRouter as Router, Routes } from 'react-router-dom';
+import './App.css';
 import { theme } from './config/Theme';
-import StyledButtonContainer from './components/shared/ButtonContainer/ButtonContainer';
+import CreateTournamentPage from './pages/CreateTournamentPage';
+import TournamentPage from './pages/TournamentPage';
 
 function App() {
   return (
-    <div className="App">
+    <Router>
       <ThemeProvider theme={theme}>
-        <StyledButtonContainer>
-          <Button primary onClick={() => { }}>
-            Click me
-          </Button>
-          <Button onClick={() => { }}>
-            Click me
-          </Button>
-        </StyledButtonContainer>
+        <Routes>
+          <Route path="/" element={<CreateTournamentPage />} />
+          <Route path="/tournament/:id" element={<TournamentPage />} />
+        </Routes>
       </ThemeProvider>
-    </div>
+    </Router>
   );
 }
 

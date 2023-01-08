@@ -6,6 +6,9 @@
       "composeLaunchAction": "LaunchBrowser",
       "composeLaunchServiceName": "tournamentplanner.backend.api",
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
+      "useSSL": true,
+      "httpPort": 5000,
+      "sslPort": 5001,
       "serviceActions": {
         "db": "StartWithoutDebugging",
         "pgadmin": "StartWithoutDebugging",

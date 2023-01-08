@@ -7,5 +7,29 @@ export const theme = createTheme({
         secondary: {
             main: green[500]
         }
+    },
+    components: {
+        MuiTextField: {
+            defaultProps: {
+                fullWidth: true
+            },
+            styleOverrides: {
+                root: {
+                    marginBottom: '1rem',
+                    marginRight: '1rem'
+                }
+            }
+        },
+        MuiFormControl: {
+            defaultProps: {
+                fullWidth: true
+            },
+            styleOverrides: {
+                root: {
+                    marginBottom: '1rem',
+                    marginRight: '1rem'
+                }
+            }
+        }
     }
 })

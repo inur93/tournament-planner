@@ -14,8 +14,8 @@ namespace TournamentPlanner.Backend.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Tournament> builder)
         {
             builder.ToTable(nameof(Tournament));
+            
             builder.HasKey(x => x.Id);
-
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
             builder.Property(x => x.Name)
@@ -29,7 +29,16 @@ namespace TournamentPlanner.Backend.Persistence.Configurations
                 .WithOne()
                 .HasForeignKey("TournamentId")
                 .OnDelete(DeleteBehavior.Cascade);
-            
+
+            builder.HasMany(x => x.Matches)
+                .WithOne()
+                .HasForeignKey(x => x.TournamentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(x => x.Teams)
+                .WithMany(x => x.Tournaments)
+                .UsingEntity<Participantship>();
+
             builder
                 .HasDiscriminator(x => x.TournamentType)
                 .HasValue<KnockoutTournament>("knockout")

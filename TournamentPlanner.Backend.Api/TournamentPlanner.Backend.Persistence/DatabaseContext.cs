@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using TournamentPlanner.Backend.Domain.Entities;
+using TournamentPlanner.Backend.Persistence.Configurations;
 
 namespace TournamentPlanner.Backend.Domain;
 
@@ -29,5 +30,6 @@ public class DatabaseContext : ApiAuthorizationDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TournamentConfiguration).Assembly);
     }
 }

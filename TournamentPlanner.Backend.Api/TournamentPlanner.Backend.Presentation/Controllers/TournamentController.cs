@@ -33,7 +33,7 @@ public class TournamentController : ControllerBase
 
 
     [HttpPost("knockout")]
-    public async Task<KnockoutTournamentDto> CreateKnockoutTournament(
+    public async Task<TournamentDetailsDto> CreateKnockoutTournament(
         [FromBody] KnockoutTournamentForCreation forCreation,
         CancellationToken token)
     {

@@ -8,4 +8,6 @@ public interface IRepositoryManager
     ITeamRepository TeamRepository { get; }
 
     IUnitOfWork UnitOfWork { get; }
+    IMatchRepository MatchRepository { get; }
+    IMatchCandidateRepository MatchCandidateRepository { get; }
 }
