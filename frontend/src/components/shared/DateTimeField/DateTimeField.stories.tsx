@@ -6,7 +6,7 @@ import DateTimeField from './DateTimeField';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Forms/DateTimeField',
+  title: 'Fields/DateTimeField',
   component: DateTimeField,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {

@@ -507,6 +507,7 @@ export interface IKnockoutTournamentForCreation {
 }
 
 export class LeagueDetails extends TournamentDetailsDto implements ILeagueDetails {
+    teams?: TeamDto[] | undefined;
 
     constructor(data?: ILeagueDetails) {
         super(data);
@@ -515,6 +516,13 @@ export class LeagueDetails extends TournamentDetailsDto implements ILeagueDetail
 
     init(_data?: any) {
         super.init(_data);
+        if (_data) {
+            if (Array.isArray(_data["teams"])) {
+                this.teams = [] as any;
+                for (let item of _data["teams"])
+                    this.teams!.push(TeamDto.fromJS(item));
+            }
+        }
     }
 
     static fromJS(data: any): LeagueDetails {
@@ -526,18 +534,24 @@ export class LeagueDetails extends TournamentDetailsDto implements ILeagueDetail
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.teams)) {
+            data["teams"] = [];
+            for (let item of this.teams)
+                data["teams"].push(item.toJSON());
+        }
         super.toJSON(data);
         return data;
     }
 }
 
 export interface ILeagueDetails extends ITournamentDetailsDto {
+    teams?: TeamDto[] | undefined;
 }
 
 export class TeamDto implements ITeamDto {
-    id?: string;
-    name?: string | undefined;
-    points?: number;
+    id!: string;
+    name!: string;
+    points!: number;
 
     constructor(data?: ITeamDto) {
         if (data) {
@@ -573,9 +587,9 @@ export class TeamDto implements ITeamDto {
 }
 
 export interface ITeamDto {
-    id?: string;
-    name?: string | undefined;
-    points?: number;
+    id: string;
+    name: string;
+    points: number;
 }
 
 export class TournamentDto implements ITournamentDto {

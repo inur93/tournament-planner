@@ -3,7 +3,7 @@ import FixtureList from './FixtureList';
 import { fixture, fixtureList } from '../../mockData/mockFixtures';
 import { startOfToday, addHours } from 'date-fns';
 export default {
-    title: 'TournamentPlanner/FixtureList',
+    title: 'Views/FixtureList',
     component: FixtureList,
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {},

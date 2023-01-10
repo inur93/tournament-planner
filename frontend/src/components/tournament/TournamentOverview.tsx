@@ -18,7 +18,7 @@ const TournamentOverview = ({ tournament }: Props) => {
         [];
         
     return <GridContainer>
-        <GridItem xs={12} sm={6}>
+        <GridItem xs={12}>
             <Typography variant="h5" component="h1">
                 {name}
             </Typography>
@@ -27,7 +27,7 @@ const TournamentOverview = ({ tournament }: Props) => {
             </Typography>
             <GroupList groups={groups} />
         </GridItem>
-        <GridItem xs={12} sm={6}>
+        <GridItem xs={12}>
             <Typography variant="h5" component="h2">
                 Fixtures
             </Typography>

@@ -4,7 +4,7 @@ import CreateTournamentForm from './CreateTournamentForm';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'TournamentPlanner/CreateTournamentForm',
+  title: 'Forms/CreateTournamentForm',
   component: CreateTournamentForm,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {

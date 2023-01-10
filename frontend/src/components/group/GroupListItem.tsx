@@ -3,20 +3,20 @@ import CardContent from "@mui/material/CardContent/CardContent"
 import Typography from "@mui/material/Typography"
 import { GroupDto } from "../../api/ApiClient"
 import { GridItem } from "../shared"
-import TeamList from "../team/TeamList"
+import Standings from "../tournament/Standings"
 
 type Props = {
     group: GroupDto
 }
 
 const GroupListItem = ({ group }: Props) => {
-    return <GridItem xs={6} key={group.id}>
+    return <GridItem sm={6} key={group.id}>
         <Card>
             <CardContent>
                 <Typography variant='h6'>
                     {group.name}
                 </Typography>
-                <TeamList teams={group.teams} />
+                <Standings teams={group.teams} />
             </CardContent>
         </Card>
     </GridItem>

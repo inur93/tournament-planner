@@ -3,7 +3,7 @@ import { fixture } from '../../mockData/mockFixtures';
 import UpdateFixtureForm from './UpdateFixtureForm';
 
 export default {
-    title: 'Fixture/UpdateFixtureForm',
+    title: 'Forms/UpdateFixtureForm',
     component: UpdateFixtureForm,
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {},

@@ -1,12 +1,11 @@
-import React from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import TournamentOverview from './TournamentOverview';
 import { knockout } from '../../mockData/mockTournament';
+import TournamentOverview from './TournamentOverview';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'TournamentPlanner/TournamentOverview',
+  title: 'Views/TournamentOverview',
   component: TournamentOverview,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {

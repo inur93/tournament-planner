@@ -30,6 +30,13 @@ export const theme = createTheme({
                     marginRight: '1rem'
                 }
             }
+        },
+        MuiTableCell: {
+            styleOverrides: {
+                head: {
+                    fontWeight: 600
+                }
+            }
         }
     }
 })
