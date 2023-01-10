@@ -22,7 +22,9 @@ const TeamListItem = ({ team, no }: Props) => {
             <ListItemTeamName name={team.name} />
         </ListItemText>
         <ListItemSecondaryAction>
-            {team.points}
+            <Typography variant="body1">
+                {team.points}
+            </Typography>
         </ListItemSecondaryAction>
     </ListItem>
 }
