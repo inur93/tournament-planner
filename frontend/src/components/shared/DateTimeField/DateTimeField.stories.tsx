@@ -2,30 +2,30 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 
-import DateTimeField from './DateTimeField';
+import DateTimeFieldComponent from './DateTimeField';
 import { Formik } from 'formik';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Fields/DateTimeField',
-  component: DateTimeField,
+  title: 'Shared/DateTimeField',
+  component: DateTimeFieldComponent,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
 
   },
-} as ComponentMeta<typeof DateTimeField>;
+} as ComponentMeta<typeof DateTimeFieldComponent>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof DateTimeField> = (args) => <Formik initialValues={{ date: new Date() }} onSubmit={() => { }}>
+const Template: ComponentStory<typeof DateTimeFieldComponent> = (args) => <Formik initialValues={{ date: new Date() }} onSubmit={() => { }}>
   {(values) => (
-    <DateTimeField {...args} />
+    <DateTimeFieldComponent {...args} />
   )}
 
 </Formik>;
 
-export const Default = Template.bind({});
+export const DateTimeField = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Default.args = {
+DateTimeField.args = {
   label: "Start date",
   name: "date",
 };

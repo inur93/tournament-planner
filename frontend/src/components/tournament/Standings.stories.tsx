@@ -1,19 +1,19 @@
 import {ComponentStory, ComponentMeta } from '@storybook/react';
-import Standings from './Standings';
+import StandingsComponent from './Standings';
 import { teamList } from '../../mockData/mockTeam';
 
 export default {
     title: 'Views/Standings',
-    component: Standings,
+    component: StandingsComponent,
     // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
     argTypes: {},
-} as ComponentMeta<typeof Standings>;
+} as ComponentMeta<typeof StandingsComponent>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Standings> = (args) => <Standings {...args} />;
+const Template: ComponentStory<typeof StandingsComponent> = (args) => <StandingsComponent {...args} />;
 
-export const Default = Template.bind({});
+export const Standings = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Default.args = {
+Standings.args = {
     teams: teamList(5)
 }

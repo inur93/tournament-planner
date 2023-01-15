@@ -2,24 +2,24 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Button from '../Button/Button';
-import ButtonContainer from './ButtonContainer';
+import ButtonContainerComponent from './ButtonContainer';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Example/ButtonContainer',
-  component: ButtonContainer,
+  title: 'Shared/ButtonContainer',
+  component: ButtonContainerComponent,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
 
   },
-} as ComponentMeta<typeof ButtonContainer>;
+} as ComponentMeta<typeof ButtonContainerComponent>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof ButtonContainer> = (args) => <ButtonContainer {...args} />;
+const Template: ComponentStory<typeof ButtonContainerComponent> = (args) => <ButtonContainerComponent {...args} />;
 
-export const Default = Template.bind({});
+export const ButtonContainer = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Default.args = {
+ButtonContainer.args = {
   children: <>
     <Button primary>First</Button>
     <Button >Second</Button>

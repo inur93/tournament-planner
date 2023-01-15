@@ -1,24 +1,24 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Dialog from './Dialog';
+import DialogComponent from './Dialog';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Example/Dialog',
-  component: Dialog,
+  title: 'Shared/Dialog',
+  component: DialogComponent,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {
 
   },
-} as ComponentMeta<typeof Dialog>;
+} as ComponentMeta<typeof DialogComponent>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Dialog> = (args) => <Dialog {...args} />;
+const Template: ComponentStory<typeof DialogComponent> = (args) => <DialogComponent {...args} />;
 
-export const Default = Template.bind({});
+export const Dialog = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Default.args = {
+Dialog.args = {
   id: "simple",
   title: "Are you sure?",
   description: "This operation cannot be undone. Are you sure you want to continue",
