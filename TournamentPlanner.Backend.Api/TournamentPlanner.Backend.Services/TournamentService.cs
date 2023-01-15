@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using System.Collections.ObjectModel;
+using TournamentPlanner.Backend.Contracts.Match;
 using TournamentPlanner.Backend.Contracts.Tournament;
 using TournamentPlanner.Backend.Domain.Entities;
 using TournamentPlanner.Backend.Domain.Exceptions;
@@ -141,13 +142,21 @@ internal sealed class TournamentService : ITournamentService
     {
         var teamMatches = matches
             .Where(x => x.Includes(team) &&
-                (x.IsDraw() || x.Winner() == team));
+                (x.IsDraw || x.Winner == team));
         var points = 0;
         foreach (var match in teamMatches)
         {
-            if (match.IsDraw()) points++;
+            if (match.IsDraw) points++;
             else points += 3;
         }
         return points;
+    }
+
+    public async Task<IEnumerable<MatchDto>> GetMatchesAsync(Guid id, CancellationToken token)
+    {
+        var tournament = await _repositoryManager.TournamentRepository.FindTournamentWithMatches(id, token);
+        var knockoutMatches = tournament.Matches.Where(x => x.Candidates.Any()).ToList();
+        
+        return knockoutMatches.Adapt<IEnumerable<MatchDto>>();
     }
 }

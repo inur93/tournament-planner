@@ -3,15 +3,15 @@
 namespace TournamentPlanner.Backend.Contracts.Tournament;
 
 public class KnockoutTournamentForCreation
-{
-    [Required]
-    public int NumTeams { get; set; }
-    
+{    
     [Required]
     public string Name { get; set; }
 
     [Required]
     public DateTime Date { get; set; }
+
+    [Required]
+    public int NumTeams { get; set; }
 
     [Required] 
     public int NumGroups { get; set; }

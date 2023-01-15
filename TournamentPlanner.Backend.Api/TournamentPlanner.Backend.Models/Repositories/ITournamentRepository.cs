@@ -7,4 +7,5 @@ public interface ITournamentRepository
     Task<Tournament> CreateTournament(Tournament tournament, CancellationToken token);
     Task<IEnumerable<Tournament>> FindAllTournaments(CancellationToken token);
     Task<Tournament?> FindTournament(Guid id, CancellationToken token);
+    Task<Tournament?> FindTournamentWithMatches(Guid id, CancellationToken token);
 }

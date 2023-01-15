@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TournamentPlanner.Backend.Domain;
@@ -11,9 +12,10 @@ using TournamentPlanner.Backend.Domain;
 namespace TournamentPlanner.Backend.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230115184134_MatchProperties")]
+    partial class MatchProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -444,12 +446,6 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("Candidate1Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("Candidate2Id")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid?>("GroupId")
                         .HasColumnType("uuid");
 
@@ -473,10 +469,6 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Candidate1Id");
-
-                    b.HasIndex("Candidate2Id");
 
                     b.HasIndex("GroupId");
 
@@ -536,29 +528,16 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("FixtureId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid?>("GroupId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("MatchId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("PointsSet")
-                        .HasColumnType("boolean");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("FixtureId");
-
                     b.HasIndex("GroupId");
-
-                    b.HasIndex("MatchId");
 
                     b.ToTable("Team", (string)null);
                 });
@@ -712,14 +691,6 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
 
             modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Match", b =>
                 {
-                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.MatchCandidate", "Candidate1")
-                        .WithMany()
-                        .HasForeignKey("Candidate1Id");
-
-                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.MatchCandidate", "Candidate2")
-                        .WithMany()
-                        .HasForeignKey("Candidate2Id");
-
                     b.HasOne("TournamentPlanner.Backend.Domain.Entities.Group", null)
                         .WithMany("Matches")
                         .HasForeignKey("GroupId")
@@ -730,10 +701,6 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
                         .HasForeignKey("TournamentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Candidate1");
-
-                    b.Navigation("Candidate2");
                 });
 
             modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.MatchCandidate", b =>
@@ -743,7 +710,7 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
                         .HasForeignKey("GroupId");
 
                     b.HasOne("TournamentPlanner.Backend.Domain.Entities.Match", "Match")
-                        .WithMany()
+                        .WithMany("Candidates")
                         .HasForeignKey("MatchId");
 
                     b.Navigation("Group");
@@ -772,23 +739,10 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
 
             modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Team", b =>
                 {
-                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.Fixture", null)
-                        .WithMany("Teams")
-                        .HasForeignKey("FixtureId");
-
                     b.HasOne("TournamentPlanner.Backend.Domain.Entities.Group", null)
                         .WithMany("Teams")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("TournamentPlanner.Backend.Domain.Entities.Match", null)
-                        .WithMany("Teams")
-                        .HasForeignKey("MatchId");
-                });
-
-            modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Fixture", b =>
-                {
-                    b.Navigation("Teams");
                 });
 
             modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Group", b =>
@@ -800,9 +754,9 @@ namespace TournamentPlanner.Backend.Persistence.Migrations
 
             modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Match", b =>
                 {
-                    b.Navigation("Fixtures");
+                    b.Navigation("Candidates");
 
-                    b.Navigation("Teams");
+                    b.Navigation("Fixtures");
                 });
 
             modelBuilder.Entity("TournamentPlanner.Backend.Domain.Entities.Tournament", b =>

@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace TournamentPlanner.Backend.Contracts.Tournament
 {
-    internal class KnockoutStage
+    public class KnockoutStage
     {
+        public int Legs { get; set; }
+
     }
 }

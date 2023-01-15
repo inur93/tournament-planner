@@ -4,7 +4,24 @@ public class Match
 {
     public Guid Id { get; set; }
 
-    public int Round { get; set; } = 1;
+    public MatchType Type { get; set; }
+
+    public int? Round { get; set; } = 1;
+
+    /// <summary>
+    /// Determines if it is round of 16, quarter finals etc.
+    /// A value of 2 means the final
+    /// Only relevant for knockout stages
+    /// </summary>
+    public int? RoundOf { get; set; }
+
+    public string RoundOfLabel => RoundOf switch
+    {
+        2 => "Final",
+        4 => "Semi-final",
+        8 => "Quarter-final",
+        _ => $"Round of {RoundOf}"
+    };
 
     public int No { get; set; } = 1;
 
@@ -12,16 +29,25 @@ public class Match
 
     public Guid TournamentId { get; set; }
 
-    public ICollection<MatchCandidate> Candidates { get; set; } = new List<MatchCandidate>();
-    
+    public MatchCandidate? Candidate1 { get; set; }
+
+    public MatchCandidate? Candidate2 { get; set; }
+
+    public List<MatchCandidate> Candidates =>
+        Candidate1 != null && Candidate2 != null ?
+        new() { Candidate1, Candidate2 } :
+        new();
+
     public ICollection<Fixture> Fixtures { get; set; } = new List<Fixture>();
-    
-    public string Code => $"R{Round}M{No}";    
+
+    public string Code => $"{No}R{Round}";
+
 
     public Match() { }
-    public Match(List<MatchCandidate> candidates)
+    public Match(MatchCandidate candidate1, MatchCandidate candidate2)
     {
-        Candidates = candidates;
+        Candidate1 = candidate1;
+        Candidate2 = candidate2;
     }
 
     public Match(Fixture fixture) : this(new List<Fixture> { fixture })
@@ -30,19 +56,61 @@ public class Match
     public Match(List<Fixture> fixtures)
     {
         Fixtures = fixtures;
+        var teamCount = Fixtures
+            .Select(x => x.Home)
+            .Concat(Fixtures.Select(x => x.Away))
+            .Distinct()
+            .Count();
+        if (teamCount > 2)
+        {
+            throw new ArgumentException("A match can not have more than 2 teams", nameof(fixtures));
+        }
     }
 
-    internal bool Finished()
+    internal bool Finished
     {
-        return Fixtures.Any() && Fixtures.All(x => x.Finished());
+        get
+        {
+            return Fixtures.Any() && Fixtures.All(x => x.Finished);
+        }
     }
 
-    public ICollection<Team> GetTeams()
+    public ICollection<Team> Teams
     {
-        return Fixtures
-            .Select(x => new List<Team> { x.Home, x.Away })
-            .SelectMany(x => x)
-            .DistinctBy(x => x.Id)
-            .ToList();
+        get
+        {
+            return Fixtures
+                .Select(x => new List<Team> { x.Home, x.Away })
+                .SelectMany(x => x)
+                .DistinctBy(x => x.Id)
+                .ToList();
+        }
+    }
+
+    public Team? Winner
+    {
+        get
+        {
+            if (!Fixtures.Any() || !Fixtures.All(x => x.Finished))
+            {
+                return null;
+            }
+
+            return Fixtures
+                .SelectMany(x => x.Teams)
+                .Distinct()
+                .Select(team => new
+                {
+                    team,
+                    Goals = Fixtures.Sum(fixture => fixture.GetScore(team)),
+                    AwayGoals = Fixtures
+                    .Where(fixture => fixture.Away == team)
+                    .Sum(fixture => fixture.GetScore(team))
+                })
+                .OrderByDescending(x => x.Goals)
+                .ThenByDescending(x => x.AwayGoals)
+                .Select(x => x.team)
+                .First();
+        }
     }
 }

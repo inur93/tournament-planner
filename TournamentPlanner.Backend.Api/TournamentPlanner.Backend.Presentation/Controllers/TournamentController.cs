@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TournamentPlanner.Backend.Contracts.Match;
 using TournamentPlanner.Backend.Contracts.Tournament;
 using TournamentPlanner.Backend.Services.Abstractions;
 
@@ -38,5 +39,13 @@ public class TournamentController : ControllerBase
         CancellationToken token)
     {
         return await _serviceManager.TournamentService.CreateKnockoutTournamentAsync(forCreation, token);
+    }
+
+    [HttpGet("{id}/matches")]
+    public async Task<IEnumerable<MatchDto>> GetMatches(
+        [FromRoute(Name = "id")] Guid id,
+        CancellationToken token)
+    {
+        return await _serviceManager.TournamentService.GetMatchesAsync(id, token);
     }
 }

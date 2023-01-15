@@ -31,7 +31,9 @@ internal sealed class TournamentRepository : RepositoryBase<Tournament>, ITourna
                 .ThenInclude((Fixture f) => f.Home)
             .Include(x => x.Fixtures.OrderBy(x => x.No))
             .Include(x => x.Matches)
-                .ThenInclude((Match x) => x.Candidates)
+                .ThenInclude((Match x) => x.Candidate1)
+            .Include(x => x.Matches)
+                .ThenInclude((Match x) => x.Candidate2)
             .Include(x => x.Matches)
                 .ThenInclude((Match x) => x.Fixtures)
             .Include(x => x.Teams)
@@ -45,6 +47,26 @@ internal sealed class TournamentRepository : RepositoryBase<Tournament>, ITourna
                 .LoadAsync(token);
         }
         
+        return tournament;
+    }
+
+    public async Task<Tournament?> FindTournamentWithMatches(Guid id, CancellationToken token)
+    {
+        var tournament = await _set
+            .Where(x => x.Id == id)
+            .Include(x => x.Matches)
+                .ThenInclude((Match x) => x.Fixtures)
+                    .ThenInclude((Fixture x) => x.Home)
+            .Include(x => x.Matches)
+                .ThenInclude((Match x) => x.Fixtures)
+                    .ThenInclude((Fixture x) => x.Away)
+            .Include(x => x.Matches)
+                .ThenInclude((Match x) => x.Candidate1)
+                    .ThenInclude(x => x.Group)
+            .Include(x => x.Matches)
+                .ThenInclude((Match x) => x.Candidate2)
+                    .ThenInclude(x => x.Group)
+            .FirstOrDefaultAsync(token);
         return tournament;
     }
 }

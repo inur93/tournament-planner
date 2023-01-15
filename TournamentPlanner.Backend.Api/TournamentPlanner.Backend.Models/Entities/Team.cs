@@ -6,7 +6,20 @@ public class Team
 
     public string Name { get; set; }
 
-    public int Points { get; set; }
+
+    private int _points = 0;
+
+    public bool PointsSet { get; private set; }
+
+    public int Points
+    {
+        get => _points;
+        set
+        {
+            _points = value;
+            PointsSet = true;
+        }
+    }
 
     public ICollection<Tournament> Tournaments { get; set; }
 

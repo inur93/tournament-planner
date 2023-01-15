@@ -22,6 +22,8 @@ public class Fixture
     public virtual Team Home { get; set; }
     public Team Away { get; set; }
 
+    public List<Team> Teams => new() { Home, Away };
+
     public int? HomeScore { get; set; }
     public int? AwayScore { get; set; }
 
@@ -44,19 +46,37 @@ public class Fixture
         return new Fixture(Tournament, No, Away, Home);
     }
 
-    internal bool Finished()
+    internal bool Finished
     {
-        return HomeScore != null && AwayScore != null;
+        get
+        {
+            return HomeScore != null && AwayScore != null;
+        }
     }
 
-    public Team? Winner()
+    public Team? Winner
     {
-        if (!Finished()) return null;
-        return HomeScore > AwayScore ? Home : Away;
+        get
+        {
+            if (!Finished) return null;
+            return HomeScore > AwayScore ? Home : Away;
+        }
     }
 
-    public bool IsDraw()
+    public bool IsDraw
     {
-        return Finished() && HomeScore == AwayScore;
+        get
+        {
+            return Finished && HomeScore == AwayScore;
+        }
+    }
+
+    public int GetScore(Team team)
+    {
+        if (Home == team) return HomeScore ?? 0;
+        if(Away == team) return AwayScore ?? 0;
+        throw new ArgumentException(
+            $"Team {team?.Name} was neither home or away team in this fixture",
+            nameof(team));
     }
 }

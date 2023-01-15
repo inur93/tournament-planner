@@ -49,12 +49,13 @@ public class KnockoutPlanner : IPlanningAlgorithm<Group>
 
                 var c1 = new MatchCandidate(g1, p1);
                 var c2 = new MatchCandidate(g2, p2);
-                var candidates = new List<MatchCandidate> { c1, c2 };
 
-                Output.Candidates.AddRange(candidates);
-                var match = new Match(candidates)
+                Output.Candidates.Add(c1);
+                Output.Candidates.Add(c2);
+                var match = new Match(c1, c2)
                 {
                     Round = 1,
+                    RoundOf = groups.Count * TeamsProgressingToNextStage,
                     Legs = Legs,
                     No = No++,
                 };
@@ -76,19 +77,18 @@ public class KnockoutPlanner : IPlanningAlgorithm<Group>
             var legs = predecessors[i].Legs;
             // this means it is the final and we only want one fixture for the final.
             var isLastRound = count == 2;
-            var candidates = new List<MatchCandidate>
-            {
-                new MatchCandidate(predecessors[i]),
-                new MatchCandidate(predecessors[predecessors.Count -1 -i])
-            };
+            var c1 = new MatchCandidate(predecessors[i]);
+            var c2 = new MatchCandidate(predecessors[predecessors.Count - 1 - i]);
             
-            var match = new Match(candidates)
+            var match = new Match(c1, c2)
             {
-                Round = Round, 
+                Round = Round,
+                RoundOf = count,
                 Legs = isLastRound ? 1 : legs,
                 No = No++
             };
-            Output.Candidates.AddRange(candidates);
+            Output.Candidates.Add(c1);
+            Output.Candidates.Add(c2);
             roundMatches.Add(match);
         }
 
