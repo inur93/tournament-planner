@@ -7,7 +7,7 @@ type Props = {
 }
 
 const GroupList = ({ groups }: Props) => {
-    return <Grid container>
+    return <Grid container spacing={2}>
         {groups.map(x => (
             <Grid item sm={6} key={x.id}>
                 <GroupListItem group={x} />

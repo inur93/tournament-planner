@@ -8,7 +8,7 @@ type Props = {
 
 const Editable = ({ children, onChange }: Props) => {
     const [value, setValue] = useState(children.props.children)
-    const [show, setShow] = useState(false)
+    const [showOutline, setShowOutline] = useState(false)
     const [editMode, setEditMode] = useState(false)
     const inputRef = useRef<HTMLInputElement>(null);
     const [inputStyles, setInputStyles] = useState<any>(null)
@@ -17,6 +17,7 @@ const Editable = ({ children, onChange }: Props) => {
     useEffect(() => {
         if (!editMode) {
             setValue(children.props.children)
+            setShowOutline(false)
         }
     }, [editMode, children.props.children])
 
@@ -66,11 +67,11 @@ const Editable = ({ children, onChange }: Props) => {
     }, [childRef])
 
     const handleMouseOver = () => {
-        setShow(true)
+        setShowOutline(true)
     }
 
     const handleMouseLeave = () => {
-        setShow(false)
+        setShowOutline(false)
     }
 
     const handleClick = () => {
@@ -86,7 +87,7 @@ const Editable = ({ children, onChange }: Props) => {
             case 'Enter':
                 onChange(value)
                 setEditMode(false)
-                setShow(false)
+                setShowOutline(false)
                 break;
             case 'Escape':
                 setEditMode(false)
@@ -105,7 +106,7 @@ const Editable = ({ children, onChange }: Props) => {
         </>
     }
 
-    const styles = show ? { border: '1px solid black' } : {}
+    const styles = showOutline ? { border: '1px solid black' } : {}
     return cloneElement(children, {
         ref: childRef,
         onMouseOver: handleMouseOver,
