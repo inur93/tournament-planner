@@ -52,7 +52,7 @@ const Editable = ({ children, onChange }: Props) => {
             padding: styleMap.get('padding'),
             margin: styleMap.get('margin'),
             display: styleMap.get('display'),
-            width: styleMap.get('width'),
+            width: '100%', //styleMap.get('width'),
             lineHeight: styleMap.get('line-height'),
             marginInlineEnd: styleMap.get('margin-inline-end'),
             marginInlineStart: styleMap.get('margin-inline-start'),

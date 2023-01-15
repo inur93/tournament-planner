@@ -1,5 +1,5 @@
-import { Table, TableBody, TableCell, TableHead, TableRow, styled } from "@mui/material"
 import { TeamDto } from "../../api/ApiClient"
+import { Table, TableBody, TableCell, TableHead, TableRow, styled } from "@mui/material"
 
 type Props = { teams: TeamDto[] }
 

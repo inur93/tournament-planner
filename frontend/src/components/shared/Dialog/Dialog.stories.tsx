@@ -16,9 +16,9 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof Dialog> = (args) => <Dialog {...args} />;
 
-export const Simple = Template.bind({});
+export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Simple.args = {
+Default.args = {
   id: "simple",
   title: "Are you sure?",
   description: "This operation cannot be undone. Are you sure you want to continue",

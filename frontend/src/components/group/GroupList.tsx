@@ -1,5 +1,5 @@
+import { Grid } from "@mui/material"
 import { GroupDto } from "../../api/ApiClient"
-import { GridContainer } from "../shared"
 import GroupListItem from "./GroupListItem"
 
 type Props = {
@@ -7,11 +7,13 @@ type Props = {
 }
 
 const GroupList = ({ groups }: Props) => {
-    return <GridContainer>
+    return <Grid container>
         {groups.map(x => (
-            <GroupListItem key={x.id} group={x} />
+            <Grid item sm={6} key={x.id}>
+                <GroupListItem group={x} />
+            </Grid>
         ))}
-    </GridContainer>
+    </Grid>
 }
 
 export default GroupList

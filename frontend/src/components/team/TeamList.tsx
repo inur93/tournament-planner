@@ -1,5 +1,5 @@
 import { TeamDto } from "../../api/ApiClient"
-import { List } from "../shared"
+import { List } from "@mui/material"
 import TeamListItem from "./TeamListItem"
 
 type Props = {

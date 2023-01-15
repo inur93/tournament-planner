@@ -12,9 +12,9 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof FixtureList> = (args) => <FixtureList {...args} />;
 
-export const Simple = Template.bind({});
+export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Simple.args = {
+Default.args = {
     fixtures: [
         fixture({}, { omitScore: true }),
         fixture({}, { omitDateTime: true }),

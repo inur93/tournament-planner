@@ -3,6 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 
 import TextField from './TextField';
+import { Formik } from 'formik';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -15,7 +16,9 @@ export default {
 } as ComponentMeta<typeof TextField>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof TextField> = (args) => <TextField {...args} />;
+const Template: ComponentStory<typeof TextField> = (args) => <Formik initialValues={{ name: 'Fernando Torres' }} onSubmit={() => { }}>
+  <TextField {...args} />
+</Formik>;
 
 export const SingleLine = Template.bind({});
 export const MultiLine = Template.bind({});

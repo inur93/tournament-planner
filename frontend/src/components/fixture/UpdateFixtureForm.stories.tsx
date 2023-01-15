@@ -12,9 +12,9 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template: ComponentStory<typeof UpdateFixtureForm> = (args) => <UpdateFixtureForm {...args} />;
 
-export const Basic = Template.bind({});
+export const Default = Template.bind({});
 const mockFixture = fixture();
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Basic.args = {
+Default.args = {
     fixture: mockFixture
 }

@@ -1,10 +1,7 @@
-import ListItem from "@mui/material/ListItem/ListItem"
-import ListItemText from "@mui/material/ListItemText/ListItemText"
-import Typography from "@mui/material/Typography"
 import { TeamDto } from "../../api/ApiClient"
-import ListItemAvatarSmall from "../shared/List/ListItemAvatarSmall"
+import { ListItem, ListItemSecondaryAction, ListItemText, Typography } from "@mui/material"
 import ListItemTeamName from "./TeamName"
-import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction/ListItemSecondaryAction"
+import { ListItemAvatarSmall } from "../shared"
 
 type Props = {
     team: TeamDto
