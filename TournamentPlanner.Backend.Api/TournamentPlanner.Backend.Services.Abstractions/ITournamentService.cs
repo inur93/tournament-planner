@@ -11,4 +11,5 @@ public interface ITournamentService
     Task<IEnumerable<TournamentDto>> GetAllAsync(CancellationToken token);
     Task<TournamentDetailsDto> GetByIdAsync(Guid id, CancellationToken token);
     Task<IEnumerable<MatchDto>> GetMatchesAsync(Guid id, CancellationToken token);
+    Task<TournamentDetailsDto> UpdateTournament(Guid id, UpdateTournament update, CancellationToken token);
 }

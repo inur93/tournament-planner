@@ -159,4 +159,18 @@ internal sealed class TournamentService : ITournamentService
         
         return knockoutMatches.Adapt<IEnumerable<MatchDto>>();
     }
+
+    public async Task<TournamentDetailsDto> UpdateTournament(Guid id, UpdateTournament update, CancellationToken token)
+    {
+        var existing = await _repositoryManager.TournamentRepository.FindTournament(id, token);
+        if(existing == null)
+        {
+            throw new EntityNotFoundException(typeof(Tournament), id);
+        }
+
+        update.Adapt(existing);
+        await _repositoryManager.UnitOfWork.SaveChangesAsync();
+
+        return existing.Adapt<TournamentDetailsDto>();
+    }
 }

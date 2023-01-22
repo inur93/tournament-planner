@@ -6,4 +6,5 @@ public interface IGroupRepository
 {
     Task<Group> CreateGroup(Group group, CancellationToken token);
     Task<IEnumerable<Group>> CreateGroups(IEnumerable<Group> groups, CancellationToken token);
+    Task<Group?> GetGroupAsync(Guid id, CancellationToken token);
 }

@@ -34,7 +34,8 @@ const TournamentOverview = ({ tournament }: Props) => {
                 <ToggleButton value="groups">Group stage</ToggleButton>
                 <ToggleButton value="knockouts">Knockouts</ToggleButton>
             </ToggleButtonGroup>
-            <GroupList groups={groups} />
+            {view == 'groups' && <GroupList groups={groups} />}
+            {view == 'knockouts' && <Knockouts tournament={tournament as KnockoutTournamentDetails} />}
         </Grid>
         <Grid item xs={12}>
             <Typography variant="h5" component="h2">

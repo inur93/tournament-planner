@@ -41,6 +41,15 @@ public class TournamentController : ControllerBase
         return await _serviceManager.TournamentService.CreateKnockoutTournamentAsync(forCreation, token);
     }
 
+    [HttpPut("{id}")]
+    public async Task<TournamentDetailsDto> UpdateTournament(
+        [FromRoute(Name = "id")] Guid id,
+        [FromBody] UpdateTournament update,
+        CancellationToken token)
+    {
+        return await _serviceManager.TournamentService.UpdateTournament(id, update, token);
+    }
+
     [HttpGet("{id}/matches")]
     public async Task<IEnumerable<MatchDto>> GetMatches(
         [FromRoute(Name = "id")] Guid id,
