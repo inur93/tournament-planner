@@ -20,10 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TournamentPlanner.Backend.Models\TournamentPlanner.Backend.Domain.csproj" />
-    <ProjectReference Include="..\TournamentPlanner.Backend.Persistence\TournamentPlanner.Backend.Persistence.csproj" />
-    <ProjectReference Include="..\TournamentPlanner.Backend.Presentation\TournamentPlanner.Backend.Presentation.csproj" />
-    <ProjectReference Include="..\TournamentPlanner.Backend.Services\TournamentPlanner.Backend.Services.csproj" />
+    <ProjectReference Include="..\TournamentPlanner.Backend.Models\Domain.csproj" />
+    <ProjectReference Include="..\TournamentPlanner.Backend.Persistence\Persistence.csproj" />
+    <ProjectReference Include="..\TournamentPlanner.Backend.Presentation\Presentation.csproj" />
+    <ProjectReference Include="..\TournamentPlanner.Backend.Services\Services.csproj" />
   </ItemGroup>
 
 </Project>

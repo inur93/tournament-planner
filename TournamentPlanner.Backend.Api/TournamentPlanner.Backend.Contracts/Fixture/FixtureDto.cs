@@ -11,10 +11,10 @@ public class FixtureDto
     public DateTime? DateTime { get; set; }
 
     public int? HomeScore { get; set; }
-    
+
     public int? AwayScore { get; set; }
 
     public TeamDto Home { get; set; }
-    
+
     public TeamDto Away { get; set; }
 }

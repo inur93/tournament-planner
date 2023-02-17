@@ -5,7 +5,7 @@ import TournamentOverview from './TournamentOverview';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Views/Tournament Overview',
+  title: 'Viewss/Tournament Overview',
   component: TournamentOverview,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {

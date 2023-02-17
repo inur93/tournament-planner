@@ -5,6 +5,7 @@ import { KnockoutTournamentDetails, LeagueDetails } from "../../api/ApiClient"
 import FixtureList from "../fixture/FixtureList"
 import GroupList from "../group/GroupList"
 import { Grid, Typography, ToggleButtonGroup, ToggleButton } from "@mui/material"
+import Knockouts from './Knockouts'
 
 
 type Props = {
@@ -35,7 +36,7 @@ const TournamentOverview = ({ tournament }: Props) => {
                 <ToggleButton value="knockouts">Knockouts</ToggleButton>
             </ToggleButtonGroup>
             {view == 'groups' && <GroupList groups={groups} />}
-            {view == 'knockouts' && <Knockouts tournament={tournament as KnockoutTournamentDetails} />}
+            {view == 'knockouts' && <Knockouts matches={tournament.matches} />}
         </Grid>
         <Grid item xs={12}>
             <Typography variant="h5" component="h2">

@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <RootNamespace>$(SolutionName).Presentation</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TournamentPlanner.Backend.Services.Abstractions\TournamentPlanner.Backend.Services.Abstractions.csproj" />
+    <ProjectReference Include="..\TournamentPlanner.Backend.Services.Abstractions\Services.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

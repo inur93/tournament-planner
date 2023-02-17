@@ -4,10 +4,11 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <RootNamespace>$(SolutionName).Services.Abstractions</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TournamentPlanner.Backend.Contracts\TournamentPlanner.Backend.Contracts.csproj" />
+    <ProjectReference Include="..\TournamentPlanner.Backend.Contracts\Contracts.csproj" />
   </ItemGroup>
 
 </Project>

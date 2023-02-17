@@ -1,6 +1,6 @@
 
 import { faker } from '@faker-js/faker';
-import { FixtureDto } from '../api/ApiClient';
+import { FixtureDto, MatchDto } from '../api/ApiClient';
 import { team } from "./mockTeam";
 
 type FixtureConfig = {
@@ -24,4 +24,11 @@ export const fixture = (data?: Partial<FixtureDto>, config?: FixtureConfig): Fix
 
 export const fixtureList = (count: number, config?: FixtureConfig): FixtureDto[] => {
     return new Array(count).fill(null).map(() => fixture({}, config))
+}
+
+export const matchList = (fixtures: FixtureDto[]): MatchDto[] => {
+    return fixtures.map((x, i) => {
+        const roundOf = faker.datatype.number({ min: 1, max: fixtures.length / 4 })
+        return new MatchDto({ ...x, round: i, roundOf, roundOfLabel: `Round of ${roundOf}` })
+    }).sort((a, b) => (a.roundOf || 0) - (b.roundOf || 0))
 }

@@ -1,5 +1,4 @@
 ﻿using Mapster;
-using System.Collections.ObjectModel;
 using TournamentPlanner.Backend.Contracts.Match;
 using TournamentPlanner.Backend.Contracts.Tournament;
 using TournamentPlanner.Backend.Domain.Entities;
@@ -12,7 +11,6 @@ namespace TournamentPlanner.Backend.Services;
 
 internal sealed class TournamentService : ITournamentService
 {
-
     private readonly IRepositoryManager _repositoryManager;
 
     public TournamentService(IRepositoryManager repositoryManager)

@@ -24,6 +24,65 @@ export class ApiClient {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateGroup(id: string, body: UpdateGroup | undefined , cancelToken?: CancelToken | undefined): Promise<GroupDto> {
+        let url_ = this.baseUrl + "/api/groups/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUpdateGroup(_response);
+        });
+    }
+
+    protected processUpdateGroup(response: AxiosResponse): Promise<GroupDto> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = GroupDto.fromJS(resultData200);
+            return Promise.resolve<GroupDto>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<GroupDto>(null as any);
+    }
+
+    /**
      * @return Success
      */
     getTournaments(  cancelToken?: CancelToken | undefined): Promise<TournamentDto[]> {
@@ -139,6 +198,65 @@ export class ApiClient {
      * @param body (optional) 
      * @return Success
      */
+    updateTournament(id: string, body: UpdateTournament | undefined , cancelToken?: CancelToken | undefined): Promise<KnockoutTournamentDetails> {
+        let url_ = this.baseUrl + "/api/tournaments/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUpdateTournament(_response);
+        });
+    }
+
+    protected processUpdateTournament(response: AxiosResponse): Promise<KnockoutTournamentDetails> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = KnockoutTournamentDetails.fromJS(resultData200);
+            return Promise.resolve<KnockoutTournamentDetails>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<KnockoutTournamentDetails>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     createKnockoutTournament(body: KnockoutTournamentForCreation | undefined , cancelToken?: CancelToken | undefined): Promise<KnockoutTournamentDetails> {
         let url_ = this.baseUrl + "/api/tournaments/knockout";
         url_ = url_.replace(/[?&]$/, "");
@@ -189,6 +307,67 @@ export class ApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<KnockoutTournamentDetails>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getMatches(id: string , cancelToken?: CancelToken | undefined): Promise<MatchDto[]> {
+        let url_ = this.baseUrl + "/api/tournaments/{id}/matches";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetMatches(_response);
+        });
+    }
+
+    protected processGetMatches(response: AxiosResponse): Promise<MatchDto[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MatchDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<MatchDto[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<MatchDto[]>(null as any);
     }
 }
 
@@ -330,6 +509,7 @@ export class TournamentDetailsDto implements ITournamentDetailsDto {
     date!: Date;
     tournamentType!: string;
     fixtures!: FixtureDto[];
+    matches!: MatchDto[];
 
     protected _discriminator: string;
 
@@ -342,6 +522,7 @@ export class TournamentDetailsDto implements ITournamentDetailsDto {
         }
         if (!data) {
             this.fixtures = [];
+            this.matches = [];
         }
         this._discriminator = "TournamentDetailsDto";
     }
@@ -356,6 +537,11 @@ export class TournamentDetailsDto implements ITournamentDetailsDto {
                 this.fixtures = [] as any;
                 for (let item of _data["fixtures"])
                     this.fixtures!.push(FixtureDto.fromJS(item));
+            }
+            if (Array.isArray(_data["matches"])) {
+                this.matches = [] as any;
+                for (let item of _data["matches"])
+                    this.matches!.push(MatchDto.fromJS(item));
             }
         }
     }
@@ -389,6 +575,11 @@ export class TournamentDetailsDto implements ITournamentDetailsDto {
             for (let item of this.fixtures)
                 data["fixtures"].push(item.toJSON());
         }
+        if (Array.isArray(this.matches)) {
+            data["matches"] = [];
+            for (let item of this.matches)
+                data["matches"].push(item.toJSON());
+        }
         return data;
     }
 }
@@ -399,6 +590,7 @@ export interface ITournamentDetailsDto {
     date: Date;
     tournamentType: string;
     fixtures: FixtureDto[];
+    matches: MatchDto[];
 }
 
 export class KnockoutTournamentDetails extends TournamentDetailsDto implements IKnockoutTournamentDetails {
@@ -447,9 +639,9 @@ export interface IKnockoutTournamentDetails extends ITournamentDetailsDto {
 }
 
 export class KnockoutTournamentForCreation implements IKnockoutTournamentForCreation {
-    numTeams!: number;
     name!: string;
     date!: Date;
+    numTeams!: number;
     numGroups!: number;
     groupStageLegs!: number;
     numPromoted!: number;
@@ -466,9 +658,9 @@ export class KnockoutTournamentForCreation implements IKnockoutTournamentForCrea
 
     init(_data?: any) {
         if (_data) {
-            this.numTeams = _data["numTeams"];
             this.name = _data["name"];
             this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
+            this.numTeams = _data["numTeams"];
             this.numGroups = _data["numGroups"];
             this.groupStageLegs = _data["groupStageLegs"];
             this.numPromoted = _data["numPromoted"];
@@ -485,9 +677,9 @@ export class KnockoutTournamentForCreation implements IKnockoutTournamentForCrea
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["numTeams"] = this.numTeams;
         data["name"] = this.name;
         data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        data["numTeams"] = this.numTeams;
         data["numGroups"] = this.numGroups;
         data["groupStageLegs"] = this.groupStageLegs;
         data["numPromoted"] = this.numPromoted;
@@ -497,9 +689,9 @@ export class KnockoutTournamentForCreation implements IKnockoutTournamentForCrea
 }
 
 export interface IKnockoutTournamentForCreation {
-    numTeams: number;
     name: string;
     date: Date;
+    numTeams: number;
     numGroups: number;
     groupStageLegs: number;
     numPromoted: number;
@@ -546,6 +738,58 @@ export class LeagueDetails extends TournamentDetailsDto implements ILeagueDetail
 
 export interface ILeagueDetails extends ITournamentDetailsDto {
     teams?: TeamDto[] | undefined;
+}
+
+export class MatchDto implements IMatchDto {
+    id?: string;
+    round?: number | undefined;
+    roundOf?: number | undefined;
+    roundOfLabel?: string | undefined;
+    no?: number;
+
+    constructor(data?: IMatchDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.round = _data["round"];
+            this.roundOf = _data["roundOf"];
+            this.roundOfLabel = _data["roundOfLabel"];
+            this.no = _data["no"];
+        }
+    }
+
+    static fromJS(data: any): MatchDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MatchDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["round"] = this.round;
+        data["roundOf"] = this.roundOf;
+        data["roundOfLabel"] = this.roundOfLabel;
+        data["no"] = this.no;
+        return data;
+    }
+}
+
+export interface IMatchDto {
+    id?: string;
+    round?: number | undefined;
+    roundOf?: number | undefined;
+    roundOfLabel?: string | undefined;
+    no?: number;
 }
 
 export class TeamDto implements ITeamDto {
@@ -638,6 +882,134 @@ export interface ITournamentDto {
     name: string;
     date: Date;
     tournamentType: string;
+}
+
+export class UpdateGroup implements IUpdateGroup {
+    name?: string | undefined;
+    teams?: UpdateTeam[] | undefined;
+
+    constructor(data?: IUpdateGroup) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            if (Array.isArray(_data["teams"])) {
+                this.teams = [] as any;
+                for (let item of _data["teams"])
+                    this.teams!.push(UpdateTeam.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UpdateGroup {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateGroup();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        if (Array.isArray(this.teams)) {
+            data["teams"] = [];
+            for (let item of this.teams)
+                data["teams"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IUpdateGroup {
+    name?: string | undefined;
+    teams?: UpdateTeam[] | undefined;
+}
+
+export class UpdateTeam implements IUpdateTeam {
+    id?: string;
+    name?: string | undefined;
+
+    constructor(data?: IUpdateTeam) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): UpdateTeam {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateTeam();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data;
+    }
+}
+
+export interface IUpdateTeam {
+    id?: string;
+    name?: string | undefined;
+}
+
+export class UpdateTournament implements IUpdateTournament {
+    name?: string | undefined;
+    date?: Date;
+
+    constructor(data?: IUpdateTournament) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): UpdateTournament {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateTournament();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IUpdateTournament {
+    name?: string | undefined;
+    date?: Date;
 }
 
 export class ApiException extends Error {

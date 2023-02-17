@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <RootNamespace>$(SolutionName).Persistence</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TournamentPlanner.Backend.Models\TournamentPlanner.Backend.Domain.csproj" />
+    <ProjectReference Include="..\TournamentPlanner.Backend.Models\Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

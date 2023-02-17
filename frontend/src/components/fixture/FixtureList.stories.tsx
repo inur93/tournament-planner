@@ -13,6 +13,8 @@ export default {
 const Template: ComponentStory<typeof FixtureListComponent> = (args) => <FixtureListComponent {...args} />;
 
 export const FixtureList = Template.bind({});
+export const EmptyList = Template.bind({});
+
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 FixtureList.args = {
     fixtures: [
@@ -20,4 +22,8 @@ FixtureList.args = {
         fixture({}, { omitDateTime: true }),
         fixture({ dateTime: addHours(startOfToday(), 18) }, { omitScore: true }),
         ...fixtureList(5)]
+}
+
+EmptyList.args = {
+    fixtures: []
 }

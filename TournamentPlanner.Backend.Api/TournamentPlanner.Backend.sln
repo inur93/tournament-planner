@@ -5,27 +5,27 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentPlanner.Backend.Api", "TournamentPlanner.Backend.Api\TournamentPlanner.Backend.Api.csproj", "{533B0AF4-6C84-4212-8919-A5A741D5228B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentPlanner.Backend.Domain", "TournamentPlanner.Backend.Models\TournamentPlanner.Backend.Domain.csproj", "{3BEF1285-CD2D-4F74-A81C-CF321E4E4040}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "TournamentPlanner.Backend.Models\Domain.csproj", "{3BEF1285-CD2D-4F74-A81C-CF321E4E4040}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{1FF5F8ED-CC13-4245-AA36-81327C6E23E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B85ED0DA-4689-4706-A567-EA0E723BE3A2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentPlanner.Backend.Contracts", "TournamentPlanner.Backend.Contracts\TournamentPlanner.Backend.Contracts.csproj", "{7BEEC279-8423-4014-B99E-1F965BD60C87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "TournamentPlanner.Backend.Contracts\Contracts.csproj", "{7BEEC279-8423-4014-B99E-1F965BD60C87}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentPlanner.Backend.Services", "TournamentPlanner.Backend.Services\TournamentPlanner.Backend.Services.csproj", "{20871FB6-8D60-4834-BB12-942F6AD3720A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "TournamentPlanner.Backend.Services\Services.csproj", "{20871FB6-8D60-4834-BB12-942F6AD3720A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentPlanner.Backend.Services.Abstractions", "TournamentPlanner.Backend.Services.Abstractions\TournamentPlanner.Backend.Services.Abstractions.csproj", "{9C6EE76C-84B1-4B2A-9D72-3D64847FBDEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Abstractions", "TournamentPlanner.Backend.Services.Abstractions\Services.Abstractions.csproj", "{9C6EE76C-84B1-4B2A-9D72-3D64847FBDEE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{7FDB44F7-847B-4032-BD71-F8B8E34D6A69}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentPlanner.Backend.Persistence", "TournamentPlanner.Backend.Persistence\TournamentPlanner.Backend.Persistence.csproj", "{87BA01E6-0F41-48DE-BE31-96EA68438D6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "TournamentPlanner.Backend.Persistence\Persistence.csproj", "{87BA01E6-0F41-48DE-BE31-96EA68438D6B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TournamentPlanner.Backend.Presentation", "TournamentPlanner.Backend.Presentation\TournamentPlanner.Backend.Presentation.csproj", "{B71D48A6-5606-45DD-8E91-90F4F7021F3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "TournamentPlanner.Backend.Presentation\Presentation.csproj", "{B71D48A6-5606-45DD-8E91-90F4F7021F3B}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E14FD9F6-DA94-4CC7-96A3-13329143C150}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TournamentPlanner.Backend.Services.Test", "..\TournamentPlanner.Backend.Services.Test\TournamentPlanner.Backend.Services.Test.csproj", "{E6A07956-AD9D-4F8D-9205-583B64F8C2D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services.Test", "..\TournamentPlanner.Backend.Services.Test\Services.Test.csproj", "{E6A07956-AD9D-4F8D-9205-583B64F8C2D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

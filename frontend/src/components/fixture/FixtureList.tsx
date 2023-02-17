@@ -12,7 +12,7 @@ type Props = {
 const FixtureList = ({ fixtures }: Props) => {
     if (!fixtures.length) {
         return <Typography variant="body1">
-            No fixtures available
+            No fixtures available - go create some!!
         </Typography>
     }
     return <List>
