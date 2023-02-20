@@ -11,14 +11,16 @@ type Props = {
 const UpdateScores = ({ fixtures, onSave }: Props) => {
   const ref = useRef<HTMLUListElement>(null)
   useEffect(() => {
-    const target = fixtures.find((x) => x.awayScore === undefined)
+    const target = fixtures.find((x) => x.awayScore === undefined || x.awayScore === null)
     if (!target?.id) return
     if (!ref.current?.children) return
 
     //TODO this is an antipattern - we don't care for now
     const element = document.getElementById(target.id)
-    element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  }, [ref])
+    setTimeout(() => {
+      element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 200)
+  }, [ref, fixtures])
   return (
     <List ref={ref}>
       {fixtures.map((fixture) => (

@@ -25,7 +25,7 @@ const FixtureListItem = ({ fixture, className }: Props) => {
     return <ListItem component={Card} className={className}>
         <ListItemAvatarSmall>
             <Typography variant="body2" fontSize={12}>
-                {fixture.homeScore ? 'FT' : formatDateTime(fixture.dateTime, fixture.no?.toString())}
+                {fixture.homeScore !== null ? 'FT' : formatDateTime(fixture.dateTime, fixture.no?.toString())}
             </Typography>
         </ListItemAvatarSmall>
         <ListItemText>

@@ -28,7 +28,7 @@ public class MatchCandidate : Opponent
             ArgumentNullException.ThrowIfNull(Group, nameof(Group));
             ArgumentNullException.ThrowIfNull(Position, nameof(Position));
 
-            if (Group.Finished)
+            if (Group.Finished && Group.Teams.All(x => x.PointsSet))
             {
                 return Group.TeamInPosition(Position.Value);
             }

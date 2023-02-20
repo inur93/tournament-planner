@@ -27,6 +27,65 @@ export class ApiClient {
      * @param body (optional) 
      * @return Success
      */
+    updateFixtureScores(id: string, body: UpdateScoreDto | undefined , cancelToken?: CancelToken | undefined): Promise<FixtureDto> {
+        let url_ = this.baseUrl + "/api/fixtures/{id}/score";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: AxiosRequestConfig = {
+            data: content_,
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processUpdateFixtureScores(_response);
+        });
+    }
+
+    protected processUpdateFixtureScores(response: AxiosResponse): Promise<FixtureDto> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = FixtureDto.fromJS(resultData200);
+            return Promise.resolve<FixtureDto>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<FixtureDto>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     updateGroup(id: string, body: UpdateGroup | undefined , cancelToken?: CancelToken | undefined): Promise<GroupDto> {
         let url_ = this.baseUrl + "/api/groups/{id}";
         if (id === undefined || id === null)
@@ -1285,6 +1344,46 @@ export class UpdateGroup implements IUpdateGroup {
 export interface IUpdateGroup {
     name: string;
     teams: UpdateTeam[];
+}
+
+export class UpdateScoreDto implements IUpdateScoreDto {
+    homeScore?: number | undefined;
+    awayScore?: number | undefined;
+
+    constructor(data?: IUpdateScoreDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.homeScore = _data["homeScore"];
+            this.awayScore = _data["awayScore"];
+        }
+    }
+
+    static fromJS(data: any): UpdateScoreDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateScoreDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["homeScore"] = this.homeScore;
+        data["awayScore"] = this.awayScore;
+        return data;
+    }
+}
+
+export interface IUpdateScoreDto {
+    homeScore?: number | undefined;
+    awayScore?: number | undefined;
 }
 
 export class UpdateTeam implements IUpdateTeam {
