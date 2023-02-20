@@ -1,5 +1,6 @@
 ﻿using TournamentPlanner.Backend.Domain.Entities;
 using TournamentPlanner.Backend.Services.Abstractions.Algorithms;
+using MatchType = TournamentPlanner.Backend.Domain.Entities.MatchType;
 
 namespace TournamentPlanner.Backend.Services.Algorithms;
 //
@@ -9,16 +10,19 @@ namespace TournamentPlanner.Backend.Services.Algorithms;
 /// </summary>
 public class CircleMethodPlanner : IPlanningAlgorithm<Team>
 {
-    public CircleMethodPlanner(Tournament tournament, int roundRobins, int startNo)
+    public CircleMethodPlanner(Tournament tournament, MatchType matchType, int roundRobins, int startNo)
     {
         Tournament = tournament;
         RoundRobins = roundRobins;
         StartNo = startNo;
         FixtureNo = startNo;
         ByeTeam = new Team("Bye");
+        MatchType = matchType;
     }
 
     public Tournament Tournament { get; }
+
+    public MatchType MatchType { get; }
     private Team ByeTeam { get; }
     public int RoundRobins { get; }
     public int StartNo { get; }
@@ -58,7 +62,8 @@ public class CircleMethodPlanner : IPlanningAlgorithm<Team>
                     var match = new Match(fixture)
                     {
                         Round = r + 1,
-                        No = fixture.No
+                        No = fixture.No,
+                        Type = MatchType
                     };
                     output.Fixtures.Add(fixture);
                     output.Matches.Add(match);

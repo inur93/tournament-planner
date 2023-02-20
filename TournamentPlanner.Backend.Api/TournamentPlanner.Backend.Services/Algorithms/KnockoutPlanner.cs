@@ -1,5 +1,6 @@
 ﻿using TournamentPlanner.Backend.Domain.Entities;
 using TournamentPlanner.Backend.Services.Abstractions.Algorithms;
+using MatchType = TournamentPlanner.Backend.Domain.Entities.MatchType;
 
 namespace TournamentPlanner.Backend.Services.Algorithms;
 
@@ -58,6 +59,7 @@ public class KnockoutPlanner : IPlanningAlgorithm<Group>
                     RoundOf = groups.Count * TeamsProgressingToNextStage,
                     Legs = Legs,
                     No = No++,
+                    Type = MatchType.Knockout
                 };
                 Output.Matches.Add(match);
             }
@@ -85,7 +87,8 @@ public class KnockoutPlanner : IPlanningAlgorithm<Group>
                 Round = Round,
                 RoundOf = count,
                 Legs = isLastRound ? 1 : legs,
-                No = No++
+                No = No++,
+                Type = MatchType.Knockout
             };
             Output.Candidates.Add(c1);
             Output.Candidates.Add(c2);

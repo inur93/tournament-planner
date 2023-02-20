@@ -22,6 +22,9 @@ public class FixtureConfiguration : IEntityTypeConfiguration<Fixture>
             .IsRequired()
             .HasDefaultValue(1);
 
+        builder.Ignore(x => x.Teams);
+        builder.Ignore(x => x.IsDraw);
+
         //builder.Property(x => x.AwayId);
         //builder.Property(x => x.HomeId);
 

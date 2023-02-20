@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TournamentPlanner.Backend.Contracts.Group;
+using TournamentPlanner.Backend.Contracts.Match;
 using TournamentPlanner.Backend.Services.Abstractions;
 
 namespace TournamentPlanner.Backend.Presentation.Controllers;
@@ -16,6 +17,7 @@ public class GroupController : ControllerBase
     {
         _serviceManager = serviceManager;
     }
+    
     [HttpPut("{id}")]
     public async Task<GroupDto> UpdateGroup(
         [FromRoute(Name = "id")] Guid id,
@@ -23,6 +25,14 @@ public class GroupController : ControllerBase
         CancellationToken token)
     {
         return await _serviceManager.GroupService.UpdateGroup(id, update, token);
+    }
+
+    [HttpGet("{id}/matches")]
+    public async Task<IEnumerable<MatchDto>> GetGroupMatches(
+        [FromRoute(Name = "id")] Guid id,
+        CancellationToken token)
+    {
+        return await _serviceManager.GroupService.GetMatches(id, token);
     }
 
 }

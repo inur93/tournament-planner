@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using TournamentPlanner.Backend.Contracts.Fixture;
 using TournamentPlanner.Backend.Contracts.Match;
 using TournamentPlanner.Backend.Contracts.Tournament;
 using TournamentPlanner.Backend.Domain.Entities;
@@ -6,6 +7,7 @@ using TournamentPlanner.Backend.Domain.Exceptions;
 using TournamentPlanner.Backend.Domain.Repositories;
 using TournamentPlanner.Backend.Services.Abstractions;
 using TournamentPlanner.Backend.Services.Algorithms;
+using MatchType = TournamentPlanner.Backend.Contracts.Match.MatchType;
 
 namespace TournamentPlanner.Backend.Services;
 
@@ -48,7 +50,7 @@ internal sealed class TournamentService : ITournamentService
     {
         var tournament = forCreation.Adapt<League>();
         var teams = Team.CreateTeams(tournament, forCreation.NumTeams).ToList();
-        var planner = new CircleMethodPlanner(tournament, forCreation.RoundRobins, 1);
+        var planner = new CircleMethodPlanner(tournament, Domain.Entities.MatchType.League, forCreation.RoundRobins, 1);
 
         var output = await planner.Plan(teams);
 
@@ -104,7 +106,7 @@ internal sealed class TournamentService : ITournamentService
             return GetKnockTournament(knockoutTournament);
         }
 
-        if(tournament is League league)
+        if (tournament is League league)
         {
             return GetLeague(league);
         }
@@ -150,18 +152,31 @@ internal sealed class TournamentService : ITournamentService
         return points;
     }
 
-    public async Task<IEnumerable<MatchDto>> GetMatchesAsync(Guid id, CancellationToken token)
+    public async Task<IEnumerable<MatchDto>> GetMatchesAsync(Guid id, MatchType type, CancellationToken token)
     {
         var tournament = await _repositoryManager.TournamentRepository.FindTournamentWithMatches(id, token);
-        var knockoutMatches = tournament.Matches.Where(x => x.Candidates.Any()).ToList();
-        
-        return knockoutMatches.Adapt<IEnumerable<MatchDto>>();
+
+        EntityNotFoundException.ThrowIfNull(tournament, id);
+
+        if (type is MatchType.Group && tournament is not KnockoutTournament)
+        {
+            return new List<MatchDto>();
+        }
+
+        var matches = type switch
+        {
+            MatchType.Knockout => tournament.Matches.Where(x => x.Candidates.Any()),
+            MatchType.Group => (tournament as KnockoutTournament)?.Groups.SelectMany(x => x.Matches) ?? new List<Match>(),
+            _ => tournament.Matches
+        };
+
+        return matches.OrderBy(x => x.No).Adapt<IEnumerable<MatchDto>>();
     }
 
     public async Task<TournamentDetailsDto> UpdateTournament(Guid id, UpdateTournament update, CancellationToken token)
     {
         var existing = await _repositoryManager.TournamentRepository.FindTournament(id, token);
-        if(existing == null)
+        if (existing == null)
         {
             throw new EntityNotFoundException(typeof(Tournament), id);
         }
@@ -170,5 +185,26 @@ internal sealed class TournamentService : ITournamentService
         await _repositoryManager.UnitOfWork.SaveChangesAsync();
 
         return existing.Adapt<TournamentDetailsDto>();
+    }
+
+    public async Task<IEnumerable<FixtureDto>> GetFixturesAsync(Guid id, MatchType type, CancellationToken token)
+    {
+        var tournament = await _repositoryManager.TournamentRepository.FindTournamentWithMatches(id, token);
+
+        EntityNotFoundException.ThrowIfNull(tournament, id);
+
+        if (type is MatchType.Group && tournament is not KnockoutTournament)
+        {
+            return new List<FixtureDto>();
+        }
+
+        var matches = type switch
+        {
+            MatchType.Knockout => tournament.Fixtures,
+            MatchType.Group => (tournament as KnockoutTournament)?.Groups.SelectMany(x => x.Matches.SelectMany(match => match.Fixtures)) ?? new List<Fixture>(),
+            _ => tournament.Fixtures
+        };
+
+        return matches.OrderBy(x => x.No).Adapt<IEnumerable<FixtureDto>>();
     }
 }

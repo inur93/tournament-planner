@@ -4,9 +4,11 @@
 /// Is used when opponents for a match have not be determined yet.
 /// For example for matches in a knockout stage where the group stage has to complete first.
 /// </summary>
-public class MatchCandidate
+public class MatchCandidate : Opponent
 {
     public Guid Id { get; set; }
+
+    public OpponentType Type => OpponentType.Candidate;
 
     /// <summary>
     /// Applies only when a group is specified instead of a match.
@@ -21,8 +23,7 @@ public class MatchCandidate
     {
         get
         {
-            var team = Match?.Winner;
-            if (team != null) return team;
+            if (Match != null) return Match.Winner;
 
             ArgumentNullException.ThrowIfNull(Group, nameof(Group));
             ArgumentNullException.ThrowIfNull(Position, nameof(Position));
@@ -40,7 +41,7 @@ public class MatchCandidate
         {
             return Team?.Name ??
                 Match?.Code ??
-                $"{Group?.ShortName}{Position}";
+                $"G{Group?.ShortName}P{Position}";
         }
     }
 

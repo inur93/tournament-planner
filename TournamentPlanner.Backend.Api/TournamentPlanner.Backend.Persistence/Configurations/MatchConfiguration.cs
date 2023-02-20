@@ -23,6 +23,8 @@ internal class MatchConfiguration : IEntityTypeConfiguration<Match>
         builder.HasOne(x => x.Candidate2);
         
         builder.Ignore(x => x.Candidates);
+        builder.Ignore(x => x.Home);
+        builder.Ignore(x => x.Away);
 
         builder.HasMany(x => x.Fixtures)
             .WithOne()

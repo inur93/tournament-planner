@@ -20,7 +20,7 @@ public class Fixture
     //public Guid HomeId { get; set; }
     //public Guid AwayId { get; set; }
     public virtual Team Home { get; set; }
-    public Team Away { get; set; }
+    public virtual Team Away { get; set; }
 
     public List<Team> Teams => new() { Home, Away };
 

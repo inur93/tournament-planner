@@ -15,7 +15,7 @@ public class CircleMethodPlannerTest
     {
         var tournament = new KnockoutTournament();
         var teams = Team.CreateTeams(tournament, 4).ToList();
-        var algorithm = new CircleMethodPlanner(tournament, roundRobins, 1);
+        var algorithm = new CircleMethodPlanner(tournament, MatchType.League, roundRobins, 1);
         var output = await algorithm.Plan(teams);
 
         Assert.Equal(expectedFixtures, output.Fixtures.Count);
@@ -31,7 +31,7 @@ public class CircleMethodPlannerTest
     {
         var tournament = new League();
         var teams = Team.CreateTeams(tournament, 4).ToList();
-        var algorithm = new CircleMethodPlanner(tournament, roundRobins, 1);
+        var algorithm = new CircleMethodPlanner(tournament, MatchType.League, roundRobins, 1);
         var output = await algorithm.Plan(teams);
 
         Assert.Equal(expectedFixtures, output.Fixtures.Count);

@@ -11,9 +11,9 @@ const Knockouts = ({ matches }: Props) => {
 
     const elements = matches.reduce<React.ReactElement[]>((elements, current, index, array) => {
         if (index === 0 || array[index - 1].roundOf !== current.roundOf) {
-            elements.push(<ListSubheader>{current.roundOfLabel}</ListSubheader>)
+            elements.push(<ListSubheader key={current.roundOfLabel}>{current.roundOfLabel}</ListSubheader>)
         }
-        elements.push(<StyledFixtureListItem fixture={current} />)
+        elements.push(<StyledFixtureListItem key={current.id} fixture={current} />)
         return elements
     }, [])
     return <List>

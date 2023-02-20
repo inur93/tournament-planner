@@ -1,8 +1,9 @@
-import axios from 'axios';
-import { ApiClient } from "../api/ApiClient";
+import axios from 'axios'
+import { ApiClient } from '../api/ApiClient'
 
+export const baseUrl = 'https://localhost:5001'
 const instance = axios.create({
-    // baseURL: ''
-});
+  // baseURL: ''
+})
 
-export default new ApiClient("https://localhost:5001", instance)
+export default new ApiClient(baseUrl, instance)

@@ -1,7 +1,7 @@
+import { Grid, Typography } from "@mui/material"
 import { Form, Formik } from "formik"
 import { TournamentDto } from "../../api/ApiClient"
-import { DateTimeField, NumberField, TextField } from "../shared"
-import { Grid, Typography } from "@mui/material"
+import { DateTimeField, NumberField } from "../shared"
 
 type Props = {
     tournament: TournamentDto
@@ -21,7 +21,7 @@ const FixtureSchedule = ({ tournament }: Props) => {
             validateOnChange
             validateOnBlur
             onSubmit={handleSubmit}>
-            {({ values, handleChange, handleBlur, }) => (
+            {({ handleChange }) => (
                 <Form>
                     <Grid container>
                         <Typography variant='body1'>{tournament.name}</Typography>

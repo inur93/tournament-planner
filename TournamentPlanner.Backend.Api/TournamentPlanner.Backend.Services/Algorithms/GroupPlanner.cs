@@ -1,5 +1,6 @@
 ﻿using TournamentPlanner.Backend.Domain.Entities;
 using TournamentPlanner.Backend.Services.Abstractions.Algorithms;
+using MatchType = TournamentPlanner.Backend.Domain.Entities.MatchType;
 
 namespace TournamentPlanner.Backend.Services.Algorithms;
 
@@ -10,7 +11,7 @@ public class GroupPlanner : IPlanningAlgorithm<Team>
         Tournament = tournament;
         NumGroups = numGroups;
         StartNo = startNo;
-        PlanningAlgorithm = new CircleMethodPlanner(tournament, roundRobins, startNo);
+        PlanningAlgorithm = new CircleMethodPlanner(tournament, MatchType.Group, roundRobins, startNo);
     }
 
     /// <summary>

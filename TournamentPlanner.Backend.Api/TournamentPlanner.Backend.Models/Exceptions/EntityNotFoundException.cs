@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
 namespace TournamentPlanner.Backend.Domain.Exceptions;
 
@@ -24,4 +25,18 @@ public class EntityNotFoundException : Exception
     protected EntityNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
+
+    /// <summary>
+    /// Throws an <see cref="EntityNotFoundException"/> if <paramref name="el"/> is null.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="el"></param>
+    /// <param name="id"></param>
+    public static void ThrowIfNull<T>([NotNull] T? el, Guid id)
+    {
+        if (el is null) Throw(typeof(T), id);
+    }
+
+    [DoesNotReturn]            
+    private static void Throw(Type type, Guid id) => throw new EntityNotFoundException(type, id);
 }

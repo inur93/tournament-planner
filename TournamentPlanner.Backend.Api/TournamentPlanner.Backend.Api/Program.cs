@@ -1,7 +1,12 @@
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using System.Text.Json.Serialization;
 using TournamentPlanner.Backend.Api.Configurations;
+using TournamentPlanner.Backend.Api.Extensions;
 using TournamentPlanner.Backend.Api.Filters;
 using TournamentPlanner.Backend.Domain;
+using TournamentPlanner.Backend.Domain.Exceptions;
 using TournamentPlanner.Backend.Domain.Repositories;
 using TournamentPlanner.Backend.Persistence.Repositories;
 using TournamentPlanner.Backend.Services;
@@ -19,8 +24,14 @@ builder.Services.AddControllers(options =>
 .AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 })
 .AddApplicationPart(typeof(TournamentPlanner.Backend.Presentation.AssemblyReference).Assembly);
+
+builder.Services.AddExceptionMappingOptions(c =>
+{
+    c.Map<EntityNotFoundException>(System.Net.HttpStatusCode.NotFound, e => e.Message, e => e.Message);
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(config =>
@@ -31,6 +42,12 @@ builder.Services.AddSwaggerGen(config =>
     config.SelectDiscriminatorNameUsing(baseType => "TypeName");
     config.SelectDiscriminatorValueUsing(subType => subType.Name);
 
+    var controllersXmlFilename = $"{typeof(TournamentPlanner.Backend.Presentation.AssemblyReference).Assembly.GetName().Name}.xml";
+    var contractsXmlFilename = $"{typeof(TournamentPlanner.Backend.Contracts.AssemblyReference).Assembly.GetName().Name}.xml";
+
+    config.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, controllersXmlFilename));
+    config.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, contractsXmlFilename));
+    config.SupportNonNullableReferenceTypes();
     //config.SelectDiscriminatorNameUsing((baseType) => base)
 });
 
@@ -83,7 +100,7 @@ if (app.Environment.IsDevelopment())
     app.UseCors(c =>
     {
         //c.AllowAnyOrigin();
-        c.WithOrigins(new string[] { "https://localhost:3000" });
+        c.WithOrigins(new string[] { "https://localhost:3000", "http://localhost:6006" });
         c.AllowAnyMethod();
         c.AllowAnyHeader();
     });

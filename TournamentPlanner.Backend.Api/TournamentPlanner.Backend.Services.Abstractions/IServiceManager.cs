@@ -4,4 +4,5 @@ public interface IServiceManager
 {
     ITournamentService TournamentService { get; }
     IGroupService GroupService { get; }
+    IFixtureService FixtureService { get; }
 }

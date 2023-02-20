@@ -19,10 +19,4 @@ public abstract class TournamentDetailsDto
     [Required]
     public string TournamentType { get; set; }
 
-    [Required]
-    public List<FixtureDto> Fixtures { get; set; } = new List<FixtureDto>();
-
-    [Required]
-    public List<MatchDto> Matches { get; set; } = new List<MatchDto>();
-
 }

@@ -1,25 +1,23 @@
-import { useEffect, useState } from 'react'
+import { Grid } from '@mui/material'
 import { useParams } from 'react-router-dom'
-import { TournamentDetailsDto } from '../api/ApiClient'
+import Loading from '../components/shared/Loading/Loading'
 import TournamentOverview from '../components/tournament/TournamentOverview'
 import apiClient from '../config/apiClient'
-import { Grid } from '@mui/material'
-type Props = {}
+import { useData } from '../hooks/useData'
 
-const TournamentPage = ({ }: Props) => {
-    const { id } = useParams()
-    const [tournament, setTournament] = useState<TournamentDetailsDto>();
+const TournamentPage = () => {
+  const { id } = useParams()
+  const [tournament, loadTournament] = useData((_id) => apiClient.getTournamentById(_id), id)
 
-    useEffect(() => {
-        if (!id) return;
-        apiClient.getTournamentById(id).then(res => setTournament(res))
-    }, [id])
-    return <Grid container justifyContent='center'>
-        <Grid item xs={11}>
-            {!tournament && "loading..."}
-            {tournament && <TournamentOverview tournament={tournament} />}
-        </Grid>
+  return (
+    <Grid container justifyContent="center">
+      <Grid item xs={11}>
+        <Loading {...tournament} retry={loadTournament}>
+          {tournament.data && <TournamentOverview tournament={tournament.data} />}
+        </Loading>
+      </Grid>
     </Grid>
+  )
 }
 
 export default TournamentPage

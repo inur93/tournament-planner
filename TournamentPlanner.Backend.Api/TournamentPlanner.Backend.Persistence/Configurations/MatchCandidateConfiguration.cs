@@ -17,5 +17,6 @@ internal class MatchCandidateConfiguration : IEntityTypeConfiguration<MatchCandi
 
         builder.HasOne(x => x.Group);
         builder.HasOne(x => x.Match);
+        builder.Ignore(x => x.Type);
     }
 }

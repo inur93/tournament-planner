@@ -1,8 +1,10 @@
 ﻿namespace TournamentPlanner.Backend.Domain.Entities;
 
-public class Team
+public class Team : Opponent
 {
     public Guid Id { get; set; }
+
+    public OpponentType Type => OpponentType.Team;
 
     public string Name { get; set; }
 

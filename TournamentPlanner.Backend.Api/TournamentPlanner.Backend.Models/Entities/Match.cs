@@ -1,4 +1,6 @@
-﻿namespace TournamentPlanner.Backend.Domain.Entities;
+﻿using TournamentPlanner.Backend.Domain.Repositories;
+
+namespace TournamentPlanner.Backend.Domain.Entities;
 
 public class Match
 {
@@ -15,7 +17,7 @@ public class Match
     /// </summary>
     public int? RoundOf { get; set; }
 
-    public string RoundOfLabel => RoundOf switch
+    public string RoundOfLabel => RoundOf is null ? "" : RoundOf switch
     {
         2 => "Final",
         4 => "Semi-final",
@@ -33,6 +35,10 @@ public class Match
 
     public MatchCandidate? Candidate2 { get; set; }
 
+    public Opponent Home => Candidate1 as Opponent ?? Fixtures.First().Home;
+
+    public Opponent Away => Candidate2 as Opponent ?? Fixtures.First().Away;
+
     public List<MatchCandidate> Candidates =>
         Candidate1 != null && Candidate2 != null ?
         new() { Candidate1, Candidate2 } :
@@ -44,6 +50,7 @@ public class Match
 
 
     public Match() { }
+
     public Match(MatchCandidate candidate1, MatchCandidate candidate2)
     {
         Candidate1 = candidate1;
@@ -82,6 +89,7 @@ public class Match
             return Fixtures
                 .Select(x => new List<Team> { x.Home, x.Away })
                 .SelectMany(x => x)
+                .Where(x => x != null)
                 .DistinctBy(x => x.Id)
                 .ToList();
         }
