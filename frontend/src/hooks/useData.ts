@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-type loaderType<T, A> = (arg: A) => Promise<T | undefined>
+type loaderType<T, A> = (arg?: A) => Promise<T | undefined>
 type UseDataContent<T, A> = [
   {
     error?: string
@@ -14,7 +14,7 @@ export const useData = <T, A>(loader: loaderType<T, A>, initialArg?: A): UseData
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<T>()
 
-  const load = async (arg: A) => {
+  const load = async (arg?: A) => {
     setLoading(true)
     setError(undefined)
     try {
@@ -28,7 +28,7 @@ export const useData = <T, A>(loader: loaderType<T, A>, initialArg?: A): UseData
   }
 
   useEffect(() => {
-    initialArg && load(initialArg)
+    load(initialArg)
   }, [initialArg])
 
   const reload = async (args?: A) => {

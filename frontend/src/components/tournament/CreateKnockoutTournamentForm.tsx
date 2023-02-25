@@ -97,7 +97,7 @@ const CreateKnockoutTournamentForm = ({ values, onSubmit }: Props) => {
                     onBlur={handleBlur}
                     onChange={handleChange} />
 
-                <Button submit primary disabled={isLoading}>Submit</Button>
+                <Button submit primary disabled={isLoading}>Create</Button>
             </Form>
         )}
     </Formik>

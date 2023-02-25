@@ -7,7 +7,7 @@ import { useData } from '../hooks/useData'
 
 const TournamentPage = () => {
   const { id } = useParams()
-  const [tournament, loadTournament] = useData((_id) => apiClient.getTournamentById(_id), id)
+  const [tournament, loadTournament] = useData(async (_id) => !_id ? undefined : apiClient.getTournamentById(_id), id)
 
   return (
     <Grid container justifyContent="center">

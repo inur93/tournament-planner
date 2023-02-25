@@ -1,6 +1,8 @@
 import React from 'react'
 import { ThemeProvider } from '@mui/material'
 import { theme } from '../src/config/Theme'
+import Toast from '../src/components/shared/Toast/Toast'
+import { HashRouter as Router, Routes } from 'react-router-dom'
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -27,7 +29,13 @@ export const parameters = {
 export const decorators = [
   (Story) => (
     <ThemeProvider theme={theme}>
-      {Story()}
+      <Toast >
+      <Router>
+        
+          {Story()}
+        
+      </Router>
+      </Toast>
     </ThemeProvider>
   )
 ]
